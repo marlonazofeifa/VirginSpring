@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{../../css/login.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{../../css/buttons.css}" type="text/css"/>
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{../../images/favicon-32.png}"/>
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{../js/jquery-3.2.1.min.js}" ></script>
+    <script type="text/javascript" th:src="@{../js/cool-alerts.js}"></script>
+    <script type="text/javascript" th:src="@{../js/messages-alert.js}"></script>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"/>
+    <title>Iniciar sesión</title>
+</head>
+<body th:style="'background: url('+@{../../images/fondo-login.jpg}+');background-size:cover;'">
+<p id="message-alert" class="not-visible" th:text="${postMessage}"></p>
+<p id="message-alert-type" class="not-visible" th:text="${postMessageType}"></p>
+<div class="form display-inline">
+    <div id="logo-container" class="display-inline">
+        <img id="logo-login" th:src="@{../../images/logo-canatur@250x100px.png}"/>
+        <h4>Sistema de Reservas</h4>
+    </div>
+    <form class="login-form display-inline" action="#" method="post" role="form" th:action="@{/login}">
+        <input type="text" id="userId" name="userId" placeholder="Usuario o correo" class="form-control"/>
+        <input type="password" id="password" name="password" placeholder="Contraseña" class="form-control"/>
+        <div class="error-message" align="center" th:if="${param.error}">
+            <p>Usuario o contraseña inválido, por favor, inténtelo de nuevo</p>
+        </div>
+        <button name="Submit" value="Login" type="Submit" text="Login">Iniciar sesión</button>
+    </form>
+
+    <a class="link" href="/restablecer-contrasena">¿Has olvidado tu contraseña?</a>
+</div>
+
+</body>
+</html>

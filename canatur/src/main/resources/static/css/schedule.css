@@ -1,0 +1,43 @@
+.content-wrapper{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    height: auto;
+    width: 80%;
+    background-color: #EEE;
+    border-radius: 0.25em;
+    padding: 2em;
+}
+
+
+.table-header{
+    background-color: var(--canatur-verde);
+    color: white;
+    cursor: default;
+    line-height: 2em;
+    z-index: 9999;
+    border:none;
+}
+
+.table-header:hover{
+    background-color: var(--canatur-verde);
+}
+
+.header-cell{
+    text-align: center;
+    border: none;
+}
+tr{
+    cursor: pointer;
+    padding-bottom: 0.25em;
+    line-height: 2em;
+}
+
+tr:hover{
+    background-color: lightgrey;
+}
+
+td{
+    text-align: center;
+}

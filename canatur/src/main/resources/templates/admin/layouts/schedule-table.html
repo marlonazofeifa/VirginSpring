@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:fragment="schedule-table">
+        <link rel="stylesheet" th:href="@{../css/bootstrap.min.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../css/general.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../css/buttons.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../css/schedule.css}" type="text/css"/>
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"/>
+        <script th:src="@{../js/jquery-3.2.1.min.js}"></script>
+        <script type="text/javascript" th:src="@{../js/schedule.js}"></script>
+    </th:block>
+
+</head>
+<body style="padding: 2em; font-family: var(--font-canatur);">
+<h1 style="margin-top: 0.5cm; align-content: center"
+    th:text="'Vuelo ' + ${idVuelo} +${initials}"></h1>
+
+<section layout:fragment="Horarios">
+    <div class="content-wrapper">
+        <p style="font-weight: 600; font-family: var(--font-canatur)">Seleccione un horario de la tabla:</p>
+        <div class="table-container">
+                <table class="full-size" id="schedule-table">
+                    <tr class="table-header">
+                        <!-- Variable that will be used to build our current url -->
+                        <th:block
+                                th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+
+                            <th class="small-column header-cell">Día</th>
+                            <th class="small-column header-cell">Hora de llegada</th>
+
+                            <th class="header-cell">Estado</th>
+                        </th:block>
+                    </tr>
+                    <div th:if="${schedule != null }">
+                        <th:block th:each="iterator : ${schedule}">
+                            <tr>
+
+                                <td th:text="${iterator.day}+','+${initials}+','+${idVuelo}" th:hidden="hidden"/>
+                                <td th:text="${iterator.day}"/>
+                                <td th:text="${iterator.arrivalHour}"/>
+                                <th:block th:switch="${iterator.state}">
+                                    <div th:case="false">
+                                        <td th:text="Inactivo"/>
+                                    </div>
+                                    <div th:case="true">
+                                        <td th:text="Activo"/>
+                                    </div>
+                                </th:block>
+                            </tr>
+                        </th:block>
+                    </div>
+                </table>
+                <div class="empty-table-text" th:if="${schedule == null or #lists.isEmpty(schedule)}">
+                    <span>No hay horarios asignados a este Vuelo.</span>
+                </div>
+            </div>
+    </div>
+
+</section>
+</body>
+</html>

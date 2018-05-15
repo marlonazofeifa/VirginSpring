@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:replace="admin/layouts/layout :: default-head('Registrar funcionario')"></th:block>
+    <link rel="stylesheet" th:href="@{../css/general.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{../css/buttons.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{../css/registration.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{../css/editprofile.css}" type="text/css"/>
+    <script type="text/javascript" th:src="@{../js/registration.js}"></script>
+    <script type="text/javascript" th:src="@{../js/editpassword.js}"></script>
+    <script type="text/javascript" th:src="@{../js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{../js/cool-alerts.js}"></script>
+    <script type="text/javascript" th:src="@{../js/messages-alert.js}"></script>
+</head>
+<body>
+<section layout:replace="admin/layouts/layout :: default-top-menu"></section>
+<section layout:insert="admin/layouts/layout :: default-body(~{ :: #content})">
+    <section layout:replace="admin/layouts/layout :: default-sidebar"></section>
+    <section id="content" class="column-right">
+        <div class="display-flex">
+            <h1>REGISTRAR FUNCIONARIO</h1>
+        </div>
+        <p id="message-alert" class="not-visible" th:text="${postMessage}"></p>
+        <p id="message-alert-type" class="not-visible" th:text="${postMessageType}"></p>
+        <div id="registration-form" class="registration-container container">
+            <form action="#" autocomplete="off" class="form-horizontal" method="post" role="form" th:action="@{/admin/registrar-funcionario}" th:object="${worker}">
+                <label class="control-label form-label">
+                    <h2>Agregar información sobre usuario</h2>
+                </label>
+                <div class="user-information compound">
+                    <div class="row form-row">
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Nombre y apellidos del funcionario<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field name">
+                                        <input type="text" class="form-control form-control-wide" placeholder="Nombre Apellido Apellido" th:field="*{name}" size="80"/>
+                                    </div>
+                                    <div class="error-message" th:if="${param.error}">
+                                        <p th:if="${param.error[0] == 'emptyName'}">Escriba un nombre válido </p>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="row form-row">
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Nombre de usuario del funcionario <span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field id">
+                                        <input type="text" id="userID" class="form-control form-control-wide" placeholder="Ej: nombre.apellido " th:field="*{userId}" size="60"/>
+                                    </div>
+                                </fieldset>
+                                <div class="error-message" th:if="${param.error}">
+                                    <p th:if="${param.error[0] == 'duplicateid'}">Ya existe otro funcionario con ese número o la entrada es inválida </p>
+                                    <p th:if="${param.error[0] == 'emptyid'}">Campo es obligatorio</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Correo electrónico<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field email">
+                                        <input type="email" class="form-control form-control-wide" placeholder="ejemplo@ejemplo.com " th:field="*{email}" size="60"/>
+                                    </div>
+                                    <div class="error-message" th:if="${param.error}">
+                                        <p th:if="${param.error[0] == 'emptyMail'}">Escriba un correo válido</p>
+                                        <p th:if="${param.error[0] == 'duplicateMail'}">El correo anterior está asociado a otra cuenta de funcionario
+                                        </p>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="row form-row">
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Número teléfono<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field tel">
+                                        <input type="tel" class="form-control form-control-wide" placeholder="8888-8888" th:field="*{principalTelephone}" size="60"/>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Teléfono de emergencia <span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field tel-2">
+                                        <input type="tel" class="form-control form-control-wide" placeholder="8888-88888" th:field="*{emergencyTelephone}" size="60"/>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row form-row">
+                    <fieldset class="form-vertical">
+                        <div class="field form-control-wide">
+                            <select id="role-selection" class="form-control form-control-wide right" style="width: 40%!important" name="role.id">
+                                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}"/>
+                            </select>
+                            <label class="control-label form-label right">
+                                Seleccione el rol del funcionario<span class="mark">*</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="row form-row" align="right">
+                    <button type="submit" id="btn-salvar" class="general medium">REGISTRAR FUNCIONARIO</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</section>
+<section layout:replace="admin/layouts/layout :: default-footer"/>
+</body>
+</html>

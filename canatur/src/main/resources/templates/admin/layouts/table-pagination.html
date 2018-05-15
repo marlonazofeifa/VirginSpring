@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:fragment="pagination-header">
+        <link rel="stylesheet" th:href="@{../css/pagination.css}" type="text/css"/>
+    </th:block>
+</head>
+<body>
+    <section id="row-counter" layout:fragment="rowCounter(formName)">
+        <span id="input-row" class="float-right display-inline">
+            <select th:name="limit"
+                    th:form="${formName}"
+                    class="action-selector-big no-margin selector-small-width"
+                    onchange="this.form.submit()">
+                <optgroup label="Cantidad de Reservas">
+                    <option th:selected="${rowcount eq 20}">
+                        20
+                    </option>
+                    <option th:selected="${rowcount eq 40}">
+                        40
+                    </option>
+                    <option th:selected="${rowcount eq 60}">
+                        60
+                    </option>
+                    <option th:selected="${rowcount eq 80}">
+                        80
+                    </option>
+                </optgroup>
+            </select>
+            <label class="margin-right">Cantidad de Reservas</label>
+        </span>
+    </section>
+    <section class="centered full-size pagination-wrapper" layout:fragment="pagination(page, number)">
+        <div class="display-inline full-size">
+            <th:block th:with="url=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                      th:if="${number > 1}">
+                <th:block th:with="newPage=${page == null ? 1 : page}, urlBuilder = ${url.replaceQueryParam('postMessage','')}">
+                    <!-- Left arrow. If page is bigger than 1. -->
+                    <th:block th:if="${newPage > 1}">
+                        <a th:with="j=${newPage}-1" th:href="${urlBuilder.replaceQueryParam('p',j).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">
+                            <img class="pagination-arrow" th:src="@{../images/arrow-left@32x64px.png}"/>
+                        </a>
+                    </th:block>
+                    <!-- If page is greater than 4, then we need to only render some of the pages that comes before the actual page. -->
+                    <!-- Also, we need to show the min limit. -->
+                    <th:block th:if="${(newPage - 3) gt 1}">
+                        <a th:href="${urlBuilder.replaceQueryParam('p',1).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">
+                            <button type="submit"
+                                    class="sqr-small light"
+                                    th:text="${1}"></button>
+                        </a>
+                        <p>...</p>
+                        <th:block th:with="lessThan = ${newPage - 1}, moreThan = ${newPage - 2}">
+                            <th:block th:each="i : ${#numbers.sequence(moreThan, lessThan)}">
+                                <a th:href="${urlBuilder.replaceQueryParam('p',i).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">
+                                    <button th:classappend="${newPage} == ${i} ? light-selected : false"
+                                            type="submit"
+                                            class="sqr-small light"
+                                            th:text="${i}"></button>
+                                </a>
+                            </th:block>
+                        </th:block>
+                    </th:block>
+                    <!--  If page is not greater than 4, we need to show all the buttons that are behind it. -->
+                    <th:block th:with="lessThan = ${newPage - 1}" th:if="${(newPage - 4) lt 1 and newPage gt 1}">
+                        <th:block th:each="i : ${#numbers.sequence(1, lessThan)}">
+                            <a th:href="${urlBuilder.replaceQueryParam('p',i).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">
+                                <button th:classappend="${newPage} == ${i} ? light-selected : false"
+                                        type="submit"
+                                        class="sqr-small light"
+                                        th:text="${i}"></button>
+                            </a>
+                        </th:block>
+                    </th:block>
+                    <!-- Actual page. -->
+                    <a th:href="${urlBuilder.replaceQueryParam('p',newPage).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">
+                        <button th:classappend="light-selected"
+                                type="submit"
+                                class="sqr-small light"
+                                th:text="${newPage}"></button>
+                    </a>
+                    <!-- If page + 3 is less than the max page number, then we need to show the following two and the limit. -->
+                    <th:block th:if="${(newPage + 3) lt number}">
+                        <th:block th:with="lessThan = ${newPage + 2}, moreThan = ${newPage + 1}">
+                            <th:block th:each="i : ${#numbers.sequence(moreThan, lessThan)}">
+                                <a th:href="${urlBuilder.replaceQueryParam('p',i).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">
+                                    <button th:classappend="${newPage} == ${i} ? light-selected : false"
+                                            type="submit"
+                                            class="sqr-small light"
+                                            th:text="${i}"></button>
+                                </a>
+                            </th:block>
+                        </th:block>
+                        <p>...</p>
+                        <a th:href="${urlBuilder.replaceQueryParam('p',number).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">
+                            <button type="submit"
+                                    class="sqr-small light"
+                                    th:text="${number}"></button>
+                        </a>
+                    </th:block>
+                    <!-- Now, if the page + 3 is not less, we just show the following numbers. -->
+                    <th:block th:with="moreThan = ${newPage + 1}" th:if="${(newPage + 4) gt number and newPage lt number}">
+                        <th:block th:each="i : ${#numbers.sequence(moreThan, number)}">
+                            <a th:href="${urlBuilder.replaceQueryParam('p',i).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">
+                                <button th:classappend="${newPage} == ${i} ? light-selected : false"
+                                        type="submit"
+                                        class="sqr-small light"
+                                        th:text="${i}"></button>
+                            </a>
+                        </th:block>
+                    </th:block>
+                    <!-- If there are more pages, then we add the right arrow. -->
+                    <th:block th:if="${newPage lt number}">
+                        <a th:with="y=${newPage}+1" th:href="${urlBuilder.replaceQueryParam('p',y).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">
+                            <img class="pagination-arrow" th:src="@{../images/arrow-right@32x64px.png}"/>
+                        </a>
+                    </th:block>
+                </th:block>
+            </th:block>
+        </div>
+    </section>
+</body>
+</html>

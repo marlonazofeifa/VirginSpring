@@ -1,0 +1,58 @@
+.add-airline-form-container{
+    margin-top: 3em;
+    float: left;
+    height: auto;
+    width: 100%;
+}
+
+.form-control-wide {
+    width:100%!important;
+}
+
+.form-row{
+    margin-top:2em;
+    margin-bottom:1em;
+}
+
+.content-wrapper-add {
+    margin: auto;
+    padding: 10px;
+    position: absolute;
+    width: 60%;
+    top: 40%;
+    left: 20%;
+}
+
+.container-airline-fields{
+    background: rgba(191, 191, 191, 0.33)!important;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 1.5em;
+    display: flex;
+    border: 0 !important;
+}
+
+.field{
+    float:left;
+    width:50%;
+    padding-left:15px;
+    padding-right:15px;
+    margin-top: 1em;
+}
+
+.textbox-fields{
+    padding-left:5px!important;
+    padding-right:5px!important;
+}
+
+#delete-airline-button{
+    background-color: indianred;
+}
+
+#checkActive{
+    float: right;
+    position: absolute;
+    right: 5%;
+    top: 15%;
+    display: flex;
+}

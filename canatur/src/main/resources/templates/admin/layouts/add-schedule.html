@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:fragment="add-schedule">
+        <link rel="stylesheet" th:href="@{../css/bootstrap.min.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../css/general.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../css/buttons.css}" type="text/css"/>
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"/>
+        <link rel="stylesheet" th:href="@{../css/add-schedule.css}" type="text/css"/>
+    </th:block>
+</head>
+<body style="padding: 2em;">
+<h1 style=" align-content: center" th:text="'Vuelo ' + ${idVuelo} +${initials}"></h1>
+
+<form class="container-box" action="/admin/Salvar-Cambio-Horario">
+    <input th:value="${initials}" th:hidden="true" name="initials"/>
+    <input th:value="${idVuelo}" th:hidden="true" name="idVuelo"/>
+    <input th:value="${day}" th:hidden="true" name="day"/>
+    <h1 th:text="${day}" style="text-align: center; margin-top: 0;margin-bottom: 0.75em;"></h1>
+    <section class="controls" layout:fragment="Datos-Horarios">
+        <div class="element">
+            <label>Hora de llegada</label>
+            <input id="time" name="time" class="form-control" type="time" th:value="${arrivalTime}"
+                   th:placeholder="${arrivalTime}"/>
+        </div>
+        <div class="element">
+            <div class="switcher">
+                <label th:text="Activo"></label>
+                <label class="switch">
+                    <input name="state" type="checkbox" th:checked="${state}"/>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+
+    </section>
+    <div class="bottom-buttons">
+        <button type="submit" class="general">SALVAR CAMBIOS</button>
+    </div>
+
+</form>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+#user-id-div {
+    text-align: left;
+}
+
+#user-id-div p {
+    font-weight: bold;
+}
+
+#user-id-div * {
+    display: inline-block;
+}
+
+#roleBox {
+    padding: 5px;
+    background-color: #e7e7e7;
+    border-radius: 10px;
+    border: solid #ffffff 5px;
+    text-align: center;
+    display: block;
+    vertical-align: middle;
+    margin-top: 2%;
+}
+
+#roleBox * {
+    display: inline-block;
+}
+
+#pop-up-window {
+    visibility: hidden;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: inherit;
+    background-color: rgba(0, 0, 0, 0.45);
+    animation: 1.5s;
+}
+
+.pop-up-form {
+    background-color: #ffffff;
+    display: block;
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 30%;
+    left: 40%;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.pop-up-form .title {
+    display: inline-block;
+    padding: 0% 5% 5% 5%;
+}
+
+#close-popup-button {
+    color: #aaaaaa;
+    float: right;
+    font-weight: bold;
+    font-size: 1.05em;
+    padding: 1%;
+}
+
+#close-popup-button:hover,
+#close-popup-button:focus {
+    background-color: #cbc8c8;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#btn-save-pass {
+    float: right;
+}
+
+.pop-up-form .field {
+    width: auto !important;
+    float: none !important;
+}
+
+.pop-up-form h1 {
+    font-size: 1.6em !important;
+}
+
+.pop-up-form .error-message {
+    display: none;
+}

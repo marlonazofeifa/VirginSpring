@@ -1,0 +1,172 @@
+.container-box{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width: 50%;
+    border-radius: 0.25em;
+    background-color: #EEE;
+    display: flex;
+    min-width: 500px;
+    min-height: 400px;
+}
+
+.left-container{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+#info-container{
+    display: flex;
+    flex-direction: column;
+    margin: 2em;
+}
+
+.rows-container{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+.title-row{
+    font-size: large;
+    font-weight: 600;
+    margin-bottom: 2em;
+}
+.row{
+    margin-left: 0;
+    padding: 0.5em;
+    border-bottom-style: dashed;
+    border-width: thin;
+    width: 100%;
+    text-align: left;
+}
+#schedule-button{
+    background-color: var(--canatur-verde);
+    height: 100%;
+    width:100%;
+    border: none;
+    border-top-right-radius: 0.25em;
+    border-bottom-right-radius: 0.25em;
+    transition: background-color 0.25s ease;
+}
+
+#schedule-button:hover{
+    background-color: #5ac94f;
+}
+
+#info-container{
+    height: 90%;
+}
+
+#buttons-container{
+    height: 10%;
+    display: flex;
+}
+
+#delete-button{
+    background-color: darkred;
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-bottom-left-radius: 0.25em;
+    transition: background-color 0.25s ease;
+}
+
+#delete-button:hover{
+    background-color: indianred;
+}
+#modify-button{
+    background-color: grey;
+    height: 100%;
+    width: 100%;
+    border: none;
+    transition: background-color 0.25s ease;
+}
+
+#modify-button:hover{
+    background-color: darkgrey;
+}
+
+
+.popup-window{
+    visibility: hidden;
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background: white;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.3);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.3);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    transition: width 1s ease, height 1s ease;
+    -webkit-transition: width 1s ease, height 1s ease, min-height 1s ease;
+}
+
+#delete-confirmation-window{
+    width:30%;
+    height: auto;
+}
+.popup-window span{
+    text-align: center;
+}
+
+.button-container{
+    margin-top: 1em;
+    display: flex;
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+#cancel-button{
+    padding: 1em;
+    border:none;
+    width: 50%;
+    background-color: #1a1a1a;
+    color: white;
+    -webkit-transition: background-color 0.25s ease;
+    -moz-transition: background-color 0.25s ease;
+    -ms-transition: background-color 0.25s ease;
+    -o-transition: background-color 0.25s ease;
+    transition: background-color 0.25s ease;
+}
+
+#cancel-button:hover{
+    background-color: #2f2f2f;
+}
+
+#delete-button-confirmation{
+    padding: 1em;
+    border:none;
+    width: 100%;
+    height: auto;
+    background-color: darkred;
+    color: white;
+    -webkit-transition: background-color 0.25s ease;
+    -moz-transition: background-color 0.25s ease;
+    -ms-transition: background-color 0.25s ease;
+    -o-transition: background-color 0.25s ease;
+    transition: background-color 0.25s ease;
+}
+
+#delete-button-confirmation:hover{
+    background-color: indianred;
+}
+
+.dark-curtain {
+    visibility: hidden;
+    position: fixed;
+    width: 100%;
+    width: -webkit-fill-available;
+    height: 100%;
+    height: -webkit-fill-available;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, .5);
+    margin-left: -2em;
+    margin-top: -6em;
+}

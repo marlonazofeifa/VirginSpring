@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link th:href="@{../css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{../css/nuevareservacion.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{../css/general.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{../css/buttons.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{../css/tags-input.css}" type="text/css"/>
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{../../images/favicon-32.png}"/>
+    <script th:src="@{../js/jquery-3.2.1.min.js}"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" th:src="@{../js/tags-input.js}"></script>
+    <script type="text/javascript" th:src="@{../js/nuevareservacion.js}"></script>
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"/>
+    <!--aquí van los js-->
+
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Sistema Canatur - Nueva reservación</title>
+</head>
+<body>
+<section layout:replace="admin/layouts/layout :: default-top-menu"></section>
+<section layout:insert="admin/layouts/layout :: default-body(~{ :: #content})">
+    <section layout:replace="admin/layouts/layout :: default-sidebar"></section>
+    <section id="content" class="column-right">
+        <div class="content-wrapper">
+            <div class="float-left">
+                <h1>NUEVA RESERVACIÓN</h1>
+            </div>
+            <div class="reservation-form-container">
+                <div class = "container" id="reservation">
+                    <div class="row form-row">
+                        <form action="#" method="post" role="form" th:action="@{/admin/nuevareservacion}" th:object="${reservation}">
+                            <div class="row form-row">
+                                <fieldset class="form-vertical">
+                                    <div class="field form-control-wide field-airlines">
+                                        <label class="control-label form-label" style="float:right;">Afiliado<font color="#CC0000">*</font></label>
+                                        <select id ="id-partner" class="form-control form-control-wide" th:field="*{idPartnerFK}">
+                                            <option th:each="partner : ${partnersList}" th:value="${partner.numId}" th:text="${partner.numId} + ': ' + ${partner.name}" />
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="row form-row">
+                                <fieldset class="form-vertical container-main-passenger">
+                                    <div class="field form-control-wide ">
+                                        <label class="control-label form-label">Pasajero representante<font color="#CC0000">*</font></label>
+                                        <fieldset class="form-vertical">
+                                            <div class="field textbox-main-passenger">
+                                                <input type="text" class="form-control form-control-wide" placeholder="Apellido"  th:field="*{lastname}"/>
+                                            </div>
+                                            <div class="field textbox-main-passenger">
+                                                <input type="text" class="form-control form-control-wide" placeholder="Nombre" th:field="*{nameRepresent}"/>
+                                            </div>
+
+                                        </fieldset>
+                                    </div>
+                                </fieldset>
+                            </div><!-- end row -->
+                            <div class="row form-row">
+                                <fieldset class="form-vertical">
+                                    <div class="field field-properties">
+                                        <label class="control-label form-label">Fecha de vuelo<font color="#CC0000">*</font></label>
+                                        <input class="form-control form-control-wide" id="arrival-date" type="date" value="2011-08-19" th:field="*{arrivalDate}" data-toggle="tooltip" data-placement="bottom" data-trigger="focus hover" title="Elija una fecha de llegada."/>
+                                    </div>
+                                    <div class="field field-properties">
+                                        <label class="control-label form-label">Aerolínea<font color="#CC0000">*</font></label>
+                                        <select class="form-control form-control-wide" id="airline-selector" th:field="*{initials_fk}" disabled="disabled" data-toggle="tooltip" data-placement="bottom" data-trigger="focus hover" title="Seleccione la aerolínea en que viajarán los pasajeros.">
+                                            <option th:each="airline : ${airlinesList}" th:value="${airline.initialPk}" th:text="${airline.initialPk} + ': ' + ${airline.name}" />
+                                        </select>
+                                    </div>
+                                    <div class="field field-properties">
+                                        <label class="control-label form-label">Número de vuelo<font color="#CC0000">*</font></label>
+                                        <select class="form-control form-control-wide" id="flight-selector" th:field="*{flightNumber}" disabled="disabled" data-toggle="tooltip" data-placement="bottom" data-trigger="focus hover" title="Seleccione el número de vuelo.">
+
+                                        </select>
+                                    </div>
+                                    <div class="field field-properties">
+                                        <label class="control-label form-label">Hora de vuelo</label>
+                                        <div>
+                                            <!-- AÑADIR ESTO COMO ATRIBUTO AL DIV PARA QUE CAMBIE DE COLOR AL CAMBIAR HORARIO DE VERANO
+                                                data-toggle="tooltip" data-placement="bottom" title="Muestra si la fecha de llegada del vuelo se encuentra en cambio de horario." class="back"
+                                            -->
+                                            <input type="text" id="flight-arrival-time" class="form-control" placeholder="--:--" disabled="true"/>
+                                            <!-- <label id = "summer-schedule" class="control-label form-label summer-schedule">Horario de verano</label> -->
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div><!-- end row -->
+                            <div class="row form-row">
+                                <fieldset class="form-vertical">
+                                    <div class="field field-properties field-totalpax">
+                                        <label class="control-label form-label">Total de pasajeros (Total pax)<font color="#CC0000">*</font></label>
+                                        <input class="form-control" type="number" value="0" id="total-pax" min="0" max="9999" data-toggle="tooltip" data-placement="bottom" data-trigger="focus hover" title="Ingrese la cantidad de pasajeros."/>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="row form-row">
+                                <fieldset class="form-vertical">
+                                    <div class="field form-control-wide">
+                                        <label class="control-label form-label" id = "lbl-passenger-info" data-toggle="tooltip" data-placement="top" title="Esta información no es necesaria para la transacción. Llenarlo podría mejorar el servicio que se le brindaría a los pasajeros una vez toquen el territorio costarricense. No se permite el uso de comas(,) ni dos puntos(:)." >Información de los pasajeros <label style="color: darkgray; font-size: smaller;">(Opcional)</label></label>
+                                        <div id="passengers-container">
+
+                                        </div>
+                                        <button class="btn_add_passenger" type="button">
+                                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="1.75em" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                                                <circle style="fill:#43B05C;" cx="25" cy="25" r="25"></circle>
+                                                <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="25" y1="13" x2="25" y2="38"></line>
+                                                <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="37.5" y1="25" x2="12.5" y2="25"></line>
+                                            </svg>
+                                            <label style="margin-left:0.5em;font-size:small">Añadir pasajero</label>
+                                        </button>
+                                    </div>
+
+                                </fieldset>
+                            </div>
+                            <div class="row form-row">
+                                <fieldset class="form-vertical">
+                                    <div class="field form-control-wide field-tags">
+                                        <label data-toggle="tooltip" data-placement="top" data-html="true" title="Use comentarios para brindar información adicional a la cámara de cómo tratar su reservación. -Utilice palabras clave de no más de 20 caracteres. -Presione el botón COMA, TAB o ENTER para agregar un comentario." class="control-label form-label">Comentarios</label>
+                                        <textarea class="form-control form-control-wide" rows="1"></textarea>
+                                        <div class="favorite-tags">
+                                        </div>
+                                        <label class="control-label form-label"><font size="1" color="#666666">Para comentarios más extendidos o consultas contactarnos al correo <a href="mailto:canaturato@canatur.org">canaturato@canatur.org</a>.</font></label>
+                                    </div>
+                                </fieldset>
+                            </div><!-- end row -->
+                            <div class="row form-row" align="right">
+                                <button type="button" id="btn-salvar" class="btn btn-default" >SALVAR RESERVACIÓN</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+<section layout:replace="admin/layouts/layout :: default-footer" />
+<script type="text/javascript">
+    for (let textarea of document.querySelectorAll('form textarea')) {
+        tagsInput(textarea);
+    }
+</script>
+</body>
+</html>

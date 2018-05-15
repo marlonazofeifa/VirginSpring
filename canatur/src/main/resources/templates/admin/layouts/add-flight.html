@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:fragment="add-airline">
+        <link rel="stylesheet" th:href="@{../../css/bootstrap.min.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../../css/general.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../../css/buttons.css}" type="text/css"/>
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"/>
+        <!--link rel="stylesheet" th:href="@{../css/nuevareservacion.css}" type="text/css"/-->
+
+        <link rel="stylesheet" th:href="@{../../css/add-flight.css}" type="text/css"/>
+        <!--script th:src="@{js/reservations.js}"></script-->
+        <script type="text/javascript" th:src="@{../../js/jquery-3.2.1.min.js}"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </th:block>
+</head>
+
+<body style="padding: 2em">
+<h1 style="margin: 0;">Nuevo vuelo</h1>
+<!--<section id="content" class="column-right">-->
+<form class="content-wrapper-add" action="#" method="get" th:action="@{/admin/salvar-vuelo}">
+    <input name="initials" th:hidden="hidden" th:value="${initials}"/>
+    <div class="form-vertical container-flight-fields">
+        <div style="background-image: url('../../images/airport-header.jpg');height: 5em;background-attachment: fixed;background-repeat: no-repeat;background-position-x: center;background-position-y: top;background-size: 130%; border-top-left-radius: 5px;border-top-right-radius: 5px;     margin-top: -1.5em; margin-left: -1.5em; margin-right: -1.5em;"></div>
+        <div class="field form-control-wide form-vertical">
+            <div class="field textbox-fields" style="width: 15%;">
+                <label style="margin-top: 0.25em; margin-right: 0.75em; margin-bottom: auto">Activo</label>
+                <label class="switch" style="margin-top: 0.25em">
+                    <input name="state" type="checkbox" checked="true"/>
+                    <span class="slider round"></span>
+                </label>
+
+            </div>
+
+            <div class="field textbox-fields" style="width: 50%;">
+                <label class="control-label form-label">Número de vuelo<font color="#CC0000">*</font></label>
+                <input name="numVuelo" type="number" class="form-control form-control-wide"
+                       placeholder="Numero de Vuelo" min="0"/>
+            </div>
+
+            <div class="field textbox-fields" style="width: 20%;">
+                <label class="control-label form-label" data-toggle="tooltip" data-placement="top" data-trigger="focus hover" title="Elija la hora con la que se crearán los horarios predeterminados.">Hora de llegada</label>
+                <input name="arrivalTime" type="time" class="form-control form-control-wide"
+                       placeholder="hh:mm"/>
+            </div>
+
+            <div class="field textbox-fields" style="float: right;width: 15%; text-align: center;">
+                <label> Horario de verano</label>
+                <label class="switch" style="margin-top: 0.25em">
+                    <input name="summerSchedule" type="checkbox"/>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+        </div>
+        <div class="field form-control-wide form-vertical">
+
+            <div class="field textbox-fields" style="width: 50%;">
+                <label class="control-label form-label">Región de procedencia<font color="#CC0000">*</font></label>
+                <select name="region" class="form-control form-control-wide"
+                       placeholder="Región" >
+                    <option value="" disabled="disabled" selected="selected">Seleccione una región...</option>
+                    <th:block th:each="iterator : ${regions}">
+                        <option th:value="${iterator}" th:text="${iterator}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+            <div class="field textbox-fields" style="width: 50%;">
+                <label class="control-label form-label">País de procedencia</label>
+                <input name="arrivesFrom" th:name="arrivesFrom" list="countries" type="text" class="form-control form-control-wide"
+                       placeholder="País"/>
+                <datalist id="countries">
+                    <th:block th:each="iterator : ${countries}">
+                        <option th:value="${iterator}" th:text="${iterator}"></option>
+                    </th:block>
+                </datalist>
+            </div>
+
+        </div>
+        <div class="row form-row" align="right">
+            <button type="submit" id="btn-salvar" class="general small">CREAR NUEVO VUELO</button>
+        </div>
+    </div>
+
+</form>
+<!--</section>-->
+<script type="text/javascript">
+    jQuery(document).ready(
+        function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        }
+    );
+</script>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:fragment="selected-worker">
+        <link rel="stylesheet" th:href="@{../css/reservations.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../css/buttons.css}" type="text/css"/>
+        <script th:src="@{../js/partners.js}"></script>
+
+    </th:block>
+</head>
+<body>
+<section layout:replace="admin/layouts/layout :: default-top-menu"></section>
+<section layout:insert="admin/layouts/layout :: default-body(~{ :: #content})">
+    <section layout:replace="admin/layouts/layout :: default-sidebar"></section>
+
+    <section id="content"  class="column-right">
+        <div class="float-left">
+            <h1>REGISTRAR FUNCIONARIO</h1>
+        </div>
+
+        <div id="registration-form" class="registration-container">
+
+            <form action="#" autocomplete="off" class="form-horizontal" method="post" role="form" th:action="@{/admin/registrar-funcionario}" th:object="${worker}">
+
+                <div class="row form-row">
+                    <fieldset class="form-vertical">
+                        <div class="field form-control-wide ">
+                            <label class="control-label form-label">Número de identificación de funcionario<font color="#CC0000">*</font></label>
+                            <fieldset class="form-vertical">
+                                <div class="field id">
+                                    <input type="text" id="userID" class="form-control form-control-wide"  placeholder="Ej: 00000000 " th:field="*{userId}"/>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="row form-row">
+                    <fieldset class="form-vertical">
+                        <div class="field form-control-wide ">
+                            <label class="control-label form-label">Nombre de funcionario<font color="#CC0000">*</font></label>
+                            <fieldset class="form-vertical">
+                                <div class="field name">
+                                    <input type="text" class="form-control form-control-wide" placeholder="Nombre" th:field="*{name}"/>
+                                    <input type="text" class="form-control form-control-wide" placeholder="Apellido " name="lastName"/>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="row form-row">
+                    <fieldset class="form-vertical">
+                        <div class="field form-control-wide ">
+                            <label class="control-label form-label">Correo electrónico<font color="#CC0000">*</font></label>
+                            <fieldset class="form-vertical">
+                                <div class="field email">
+                                    <input type="text" class="form-control form-control-wide" placeholder="ejemplo@ejemplo.com " th:field="*{email}"/>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="row form-row">
+                    <fieldset class="form-vertical">
+                        <div class="field form-control-wide ">
+                            <label class="control-label form-label">Número teléfono</label>
+                            <fieldset class="form-vertical">
+                                <div class="field tel">
+                                    <input type="text" class="form-control form-control-wide" placeholder="88888888" th:field="*{principalTelephone}"/>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="row form-row">
+                    <fieldset class="form-vertical">
+                        <div class="field form-control-wide ">
+                            <label class="control-label form-label">Teléfono de emergencia</label>
+                            <fieldset class="form-vertical">
+                                <div class="field tel-2">
+                                    <input type="text" class="form-control form-control-wide" placeholder="888888888" th:field="*{emergencyTelephone}"/>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+                <div class="row form-row" align="right">
+                    <button type="submit" id="btn-salvar" class="btn btn-default" >REGISTRAR FUNCIONARIO</button>
+                </div>
+
+            </form>
+        </div>
+
+    </section>
+</section>
+<section layout:replace="admin/layouts/layout :: default-footer"/>
+</body>
+</html>

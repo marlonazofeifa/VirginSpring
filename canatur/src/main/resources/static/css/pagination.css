@@ -1,0 +1,19 @@
+.pagination-wrapper {
+    margin-top: 1em !important;
+}
+
+.pagination-arrow {
+    margin: 0em .1em 0em .1em !important;
+    height: 1em !important;
+}
+
+#row-counter {
+    float: right;
+    margin-bottom: -3em !important;
+    position: relative;
+    z-index: 5;
+}
+
+#input-row {
+    line-height: 2em;
+}

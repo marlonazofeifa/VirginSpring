@@ -1,0 +1,49 @@
+.add-airline-form-container{
+    margin-top: 3em;
+    float: left;
+    height: auto;
+    width: 100%;
+}
+
+.form-control-wide {
+    width:100%!important;
+}
+
+.content-wrapper-add {
+    margin: auto;
+    padding: 10px;
+    position: absolute;
+    width: 60%;
+    top: 40%;
+    left: 20%;
+}
+
+.container-airline-fields{
+    background: rgba(191, 191, 191, 0.33)!important;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 1.5em;
+    display: flex;
+    flex-direction: column;
+    border: 0 !important;
+}
+
+.field{
+    width: 75%;
+    float:left;
+    padding-left:15px;
+    padding-right:15px;
+    margin-top: 1em;
+}
+
+.initials-input{
+    font-weight: 600;
+}
+
+.switcher{
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-1.5em);
+    align-items: center;
+    width: 25%;
+}

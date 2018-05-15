@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:fragment="add-airline">
+        <link rel="stylesheet" th:href="@{../../css/bootstrap.min.css}"/>
+        <link rel="stylesheet" th:href="@{../../css/general.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../../css/buttons.css}" type="text/css"/>
+        <!--link rel="stylesheet" th:href="@{../css/nuevareservacion.css}" type="text/css"/-->
+
+        <link rel="stylesheet" th:href="@{../../css/edit-flight.css}" type="text/css"/>
+        <!--script th:src="@{js/reservations.js}"></script-->
+        <script type="text/javascript" th:src="@{../../js/jquery-3.2.1.min.js}"></script>
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"/>
+    </th:block>
+</head>
+<body style="padding: 2em">
+<h1 style="margin: 0;" th:text="'VUELO ' + ${numVuelo} + ${initials}"></h1>
+
+<form class="content-wrapper-add" action="#" method="get" th:action="@{/admin/salvar-vuelo-edicion}">
+        <fieldset class="form-vertical container-airline-fields">
+            <div style="background-image: url('../../images/airplane-2598351_1920.jpg');height: 5em;background-attachment: fixed;background-repeat: no-repeat;background-position-x: center;background-position-y: -175px;border-top-left-radius: 5px;border-top-right-radius: 5px;     margin-top: -1.5em; margin-left: -1.5em; margin-right: -1.5em;"></div>
+            <div class="field form-control-wide ">
+                <label class="control-label form-label">Número de Vuelo: </label>
+                <label class="control-label form-label" th:text="${numVuelo}"></label>
+                <label class="control-label form-label" style="margin-left: 2em">Aerolínea: </label>
+                <label class="control-label form-label" th:text="${initials}"></label>
+                <fieldset class="form-vertical" style="border: 0">
+                    <div class="field">
+                        <input th:hidden="true" th:name="region" list="regions" type="text" class="form-control form-control-wide"
+                               placeholder="Región de procedencia" th:value="${region}"/>
+                        <datalist label="Regiones" id="regions">
+                            <th:block th:each="iterator : ${regionsList}">
+                                <option  th:value="${iterator}" ></option>
+                            </th:block>
+                        </datalist>
+
+                    </div>
+                    <div class="field switcher">
+                        <label> Activo </label>
+                        <label class="switch" style="margin-top: 0.25em">
+                            <input name="state" type="checkbox" th:checked="${state}"/>
+                            <span class="slider round"></span>
+                        </label>
+
+                    </div>
+                </fieldset>
+            </div>
+            <div class="row form-row" align="right">
+                <input th:name="numVuelo" th:value="${numVuelo}" th:hidden="true"/>
+                <input th:name="initials" th:value="${initials}" th:hidden="true"/>
+                <button type="submit" id="btn-salvar" class="general small">Salvar Cambios</button>
+            </div>
+        </fieldset>
+
+</form>
+<!--</section>-->
+</body>
+
+</html>

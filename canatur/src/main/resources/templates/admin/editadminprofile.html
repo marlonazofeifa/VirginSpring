@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <th:block th:replace="admin/layouts/layout :: default-head('Editar perfil')"></th:block>
+    <link rel="stylesheet" th:href="@{../css/general.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{../css/buttons.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{../css/registration.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{../css/editprofile.css}" type="text/css"/>
+    <script type="text/javascript" th:src="@{../js/registration.js}"></script>
+    <script type="text/javascript" th:src="@{../js/editpassword.js}"></script>
+    <script type="text/javascript" th:src="@{../js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{../js/cool-alerts.js}"></script>
+    <script type="text/javascript" th:src="@{../js/messages-alert.js}"></script>
+</head>
+<body>
+<section layout:replace="admin/layouts/layout :: default-top-menu"></section>
+<section layout:insert="admin/layouts/layout :: default-body(~{ :: #content}, '0')">
+    <section layout:replace="admin/layouts/layout :: default-sidebar"></section>
+
+    <section id="content" class="column-right">
+        <div class="display-flex">
+            <h1>EDITAR PERFIL - USUARIO <strong th:text="*{currentUsername}"></strong></h1>
+        </div>
+        <p id="message-alert" class="not-visible" th:text="${postMessage}"></p>
+        <p id="message-alert-type" class="not-visible" th:text="${postMessageType}"></p>
+        <div id="registration-form" class="registration-container container">
+
+            <form action="#" autocomplete="off" class="form-horizontal" method="post" role="form" th:action="@{/admin/editar-perfil}" th:object="${currentWorker}">
+
+                <label class="control-label form-label">
+                    <h2>Información sobre usuario</h2>
+                </label>
+
+                <div class="user-information compound">
+
+                    <div class="row form-row">
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Nombre de funcionario<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field name">
+                                        <input type="text" class="form-control form-control-wide" placeholder="Nombre"
+                                                th:field="*{name}" size="50"/>
+                                    </div>
+                                </fieldset>
+                                <div class="error-message" th:if="${param.error}">
+                                    <p th:if="${param.error[0] == 'emptyName'}">Por favor, escriba un nombre válido</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Correo electrónico<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field email">
+                                        <input type="email" class="form-control form-control-wide"
+                                                placeholder="Correo electrónico" th:field="*{email}" size="50"/>
+                                    </div>
+                                </fieldset>
+                                <div class="error-message" th:if="${param.error}">
+                                    <p th:if="${param.error[0] == 'duplicateEmail'}"> El correo escrito está asociado a
+                                        otra cuenta</p>
+                                    <p th:if="${param.error[0] == 'emptyEmail'}">Escriba un correo válido</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+
+                    <div class="row form-row">
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Número de teléfono<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field tel">
+                                        <input type="tel" class="form-control form-control-wide"
+                                                placeholder="8888-8888"
+                                                th:field="*{principalTelephone}" size="50"/>
+                                    </div>
+                                </fieldset>
+                                <div class="error-message" th:if="${param.error}">
+                                    <p th:if="${param.error[0] == 'wrongNumber'}">Campo obligatorio, número de teléfono inválido</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Número de teléfono de emergencia<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field tel-2">
+                                        <input type="tel" class="form-control form-control-wide"
+                                                placeholder="8888-8888" th:field="*{emergencyTelephone}" size="50"/>
+                                    </div>
+                                </fieldset>
+                                <div class="error-message" th:if="${param.error}">
+                                    <p th:if="${param.error[0] == 'wrongNumber2'}">Campo obligatorio, número de teléfono inválido</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div class="row form-row" sec:authorize="hasAuthority('BOSS')">
+                    <fieldset class="form-vertical">
+                        <div class="field form-control-wide">
+                            <select id="role-selection" class="form-control form-control-wide right" style="width: 40%!important" name="role.id">
+                                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}"/>
+                            </select>
+                            <label class="control-label form-label right">
+                                Seleccione el rol <span class="mark">*  </span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div id="change-pass-button" class="row form-row" align="right">
+                    <fieldset class="form-vertical">
+                        <div class="field form-control-wide ">
+                            <fieldset class="form-vertical">
+                                <button type="button" id="change-pass" class="medium general">
+                                    Modificar contraseña
+                                </button>
+                            </fieldset>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+                <div class="row form-row" align="right">
+                    <a href="/admin/reservas">
+                        <button type="button" id="btn-cancelar" class="medium general">CANCELAR</button>
+                    </a>
+                    <button type="submit" id="btn-salvar" class="medium general">GUARDAR CAMBIOS</button>
+                </div>
+
+            </form>
+        </div>
+
+    </section>
+</section>
+
+<!--Change password pop-up-->
+<div id="pop-up-window">
+    <div class="pop-up-form">
+        <div id="close-popup-button">
+            <span class="close">&times;</span>
+        </div>
+
+        <div class="title"><h1>CAMBIAR CONTRASEÑA</h1></div>
+
+        <div class="error-message">
+            <p>Contraseña anterior incorrecta</p>
+        </div>
+
+        <fieldset class="form-vertical">
+            <div class="field form-control-wide ">
+                <label class="control-label form-label">Contraseña anterior</label>
+                <fieldset class="form-vertical">
+                    <div class="field password">
+                        <input id="last-password" type="password" class="form-control form-control-wide"
+                                placeholder="Contraseña anterior" name="last-password"/>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="field form-control-wide ">
+                <label class="control-label form-label">Nueva contraseña (al menos 8 caracteres)</label>
+                <fieldset class="form-vertical">
+                    <div class="field password">
+                        <input id="new-password" type="password" class="form-control form-control-wide"
+                                placeholder="Contraseña nueva" name="new-password"/>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="field form-control-wide ">
+                <label class="control-label form-label">Vuelva a ingresar la contraseña</label>
+                <fieldset class="form-vertical">
+                    <div class="field password">
+                        <input id="new-password-verification" type="password" class="form-control form-control-wide"
+                               placeholder="Contraseña nueva" name="new-password"/>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div id="not-confirmed" class="error-message">
+                <p>Las contraseñas no coinciden.</p>
+            </div>
+
+            <div id="not-valid" class="error-message">
+                <p>Escriba una contraseña válida</p>
+            </div>
+        </fieldset>
+        <button type="button" id="btn-save-pass" class="medium general">CAMBIAR CONTRASEÑA</button>
+    </div>
+</div>
+
+<section layout:replace="admin/layouts/layout :: default-footer"></section>
+</body>
+</html>

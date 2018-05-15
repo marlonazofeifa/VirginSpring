@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:fragment="reservation-header">
+        <link rel="stylesheet" th:href="@{../css/reservations.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../css/general.css}" type="text/css"/>
+        <script th:src="@{../../js/jquery-3.2.1.min.js}"/>
+        <script th:src="@{../js/cool-alerts.js}"></script>
+        <script th:src="@{../js/messages-alert.js}"></script>
+        <script th:src="@{../js/reservations.js}"></script>
+        <script th:src="@{../js/jquery-3.2.1.min.js}"></script>
+    </th:block>
+</head>
+<body>
+<section layout:fragment="reservation-table">
+<div class="content-wrapper">
+    <!-- Here we add our page content. Everything else is meant to be the same for every page. -->
+    <div class="float-left">
+        <h1>RESERVAS</h1>
+        <form th:action="@{/admin/nuevaReserva}">
+            <button type="submit" class="general">Agregar</button>
+        </form>
+    </div>
+    <p id="message-alert" class="not-visible" th:text="${postMessage}"></p>
+    <p id="message-alert-type" class="not-visible" th:text="${postMessageType}"></p>
+    <div class="reservations-container clearfix">
+        <div class="date-selection-container">
+            <div class="float-left-no-margin">
+                <form id="reservation-filter" method="get" th:action="@{/admin/reservas}">
+                    <div class="full-size default-border same-height">
+                        <button type="button" id="year" class="no-margin light sqr-small">Este año</button>
+                        <button type="button" id="mes-pasado" class="no-margin light sqr-small">Últimos 30 días</button>
+                        <button type="button" id="mes" class="no-margin light sqr-small">Últimos 7 días</button>
+                        <button type="button" id="ayer" class="no-margin light sqr-small">Ayer</button>
+                        <button type="button" id="hoy" class="no-margin light sqr-small">Hoy</button>
+                        <button type="button" id="tomorrow" class="no-margin light sqr-small margin-right">Mañana</button>
+                        <label class="date-label">Desde</label>
+                        <input name="initDate" id="initial-date" type="date" class="date-selection" th:value="${initDate}"/>
+                        <label class="date-label">hasta</label>
+                        <input name="endDate" id="end-date" type="date" class="date-selection margin-right" th:value="${endDate}"/>
+                    </div>
+                    <div class="full-size default-border same-height">
+                    <select name="status" class="action-selector-big margin-right selector-big-width">
+                        <optgroup label="Estado">
+                            <th:block th:if="${status != null}">
+                                <option selected="selected" th:text="${status}"> Estado de la reserva </option>
+                            </th:block>
+                            <th:block th:if="${status == null}">
+                                <option disabled="disabled" selected="selected"> Estado de la reserva </option>
+                            </th:block>
+                            <option>
+                                Pendiente
+                            </option>
+                            <option>
+                                No recibida
+                            </option>
+                            <option>
+                                Recibida
+                            </option>
+                            <option>
+                                Todos
+                            </option>
+                        </optgroup>
+                    </select>
+                        <label class="margin-right data-label">Afiliado</label>
+                        <input class="default-datalist rounded-border margin-right selector-big-width"
+                               id="partner-holder"
+                               name="partner"
+                               list="partners"
+                               placeholder="Id de Afiliado"
+                               th:value="${partnerSelected} ? ${partnerSelected} : ''"/>
+                        <datalist id="partners">
+                            <th:block th:each="iterator : ${partners}">
+                                <option th:value="${iterator.numId+ ': '+ iterator.name}"> </option>
+                            </th:block>
+                        </datalist>
+                        <label class="margin-right data-label">Vuelos</label>
+                        <input class="default-datalist rounded-border margin-right selector-big-width"
+                               name="flight"
+                               list="flight"
+                               placeholder="Vuelo (Ej: IB317)"
+                               th:value="${flightSelected} ? ${flightSelected} : ''"/>
+                        <datalist id="flight">
+                            <th:block th:each="iterator : ${flights}">
+                                <option th:value="${iterator.initialsAirline+iterator.flightNumber}"></option>
+                            </th:block>
+                        </datalist>
+                        <label class="margin-right data-label">Representante</label>
+                        <input class="default-datalist rounded-border margin-right selector-big-width"
+                               name="reservationName"
+                               placeholder="Ej: John Doe"
+                               th:value="${reservationName}"
+                        />
+                    <button id="filter-button-reservations" class="general small" type="submit">Filtrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="batch-container">
+        <div class="float-left no-margin">
+            <select id="action-selector" class="action-selector">
+                <option disabled="disabled" th:value="notselected" selected="selected">Acción</option>
+                <th:block th:with="role = ${#authentication.authorities[0]}">
+                    <option th:value="eliminar">
+                        Eliminar
+                    </option>
+                    <th:block th:if="${#strings.equalsIgnoreCase(role,'BOSS')}">
+                        <option th:value="cancelar">
+                            Marcar como no recibida
+                        </option>
+                        <option th:value="pendiente">
+                            Marcar como pendiente
+                        </option>
+                        <option th:value="confirmar">
+                            Marcar como recibida
+                        </option>
+                    </th:block>
+                </th:block>
+            </select>
+            <button id="check-action" class="light-grey small">Aplicar</button>
+        </div>
+        <div class="float-right no-margin">
+            <div th:if="${reservationscount > 1 }">
+                <p class="small-text" th:text="${reservationscount}+' reservas encontradas. ' + ${passengers} + ' pasajeros.'"/>
+            </div>
+            <div th:if="${reservationscount == 1 }">
+                <p class="small-text" th:text="${reservationscount}+' reserva encontrada. ' + ${passengers} + ' pasajeros.'"/>
+            </div>
+            <div th:if="${reservationscount &lt; 1 }">
+                <p class="small-text" th:text="${reservationscount}+' reservas encontrada. ' + ${passengers} + ' pasajeros.'"/>
+            </div>
+        </div>
+    </div>
+    <div id="workers-container" class="no-margin">
+        <label class="confirmation-label">Funcionario encargado</label>
+        <input id="workers-list" list="workers" class="action-selector rounded-border" placeholder="Nombre o código del funcionario"/>
+        <datalist id="workers">
+            <th:block th:each="iterator : ${workers}">
+                <option th:value="${iterator.userId}" th:text="${iterator.name}"></option>
+            </th:block>
+        </datalist>
+        <label class="confirmation-label second-label">Arribo</label>
+        <input th:type="time" id="arrival-time" class="time-selector rounded-border" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]"/>
+        <button id="confirm-action" class="light-grey small margin-left">Aplicar</button>
+    </div>
+</div>
+<div class="table-container">
+    <table id="reservation-table" class="full-size">
+        <tr class="table-header">
+            <!-- Variable that will be used to build our current url -->
+            <th:block th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+                <th class="small-column"><input type="checkbox" id="selectAll"/></th>
+                <th class="small-column">Id</th>
+                <th>Afiliado</th>
+                <th>Nombre</th>
+                <th class="hide-mobile small-column">Pax. Cantidad</th>
+                <th>
+                    <span>
+                    <th:block th:switch="${orderByFilter}">
+                        <th:block th:case="'ARRIVAL_DATE'">
+                            <th:block th:if="${orderByType == 1}">
+                                <a class="order-by" th:href="${urlBuilder.replaceQueryParam('orderBy','ARRIVAL_DATE').replaceQueryParam('orderType',2).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">Fecha</a>
+                                <img class="arrow-filter no-margin" th:src="@{../images/arrow_up@64x36.png}"/>
+                            </th:block>
+                            <th:block th:if="${orderByType == 2}">
+                                <a class="order-by" th:href="${urlBuilder.replaceQueryParam('orderBy','ARRIVAL_DATE').replaceQueryParam('orderType',1).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">Fecha</a>
+                                <img class="arrow-filter no-margin" th:src="@{../images/arrow_down@64x36.png}"/>
+                            </th:block>
+                        </th:block>
+                        <th:block th:case="*">
+                            <a class="order-by" th:href="${urlBuilder.replaceQueryParam('orderBy','ARRIVAL_DATE').replaceQueryParam('orderType',1).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">Fecha</a>
+                        </th:block>
+                    </th:block>
+                    </span>
+                </th>
+                <th class="hide-mobile small-column">Hora</th>
+                <th>
+                    <span>
+                    <th:block th:switch="${orderByFilter}">
+                        <th:block th:case="'FLIGHT'">
+                            <th:block th:if="${orderByType == 1}">
+                                <a class="order-by" th:href="${urlBuilder.replaceQueryParam('orderBy','FLIGHT').replaceQueryParam('orderType',2).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">Vuelo</a>
+                                <img class="arrow-filter no-margin" th:src="@{../images/arrow_up@64x36.png}"/>
+                            </th:block>
+                            <th:block th:if="${orderByType == 2}">
+                                <a class="order-by" th:href="${urlBuilder.replaceQueryParam('orderBy','FLIGHT').replaceQueryParam('orderType',1).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">Vuelo</a>
+                                <img class="arrow-filter no-margin" th:src="@{../images/arrow_down@64x36.png}"/>
+                            </th:block>
+                        </th:block>
+                        <th:block th:case="*">
+                            <a class="order-by" th:href="${urlBuilder.replaceQueryParam('orderBy','FLIGHT').replaceQueryParam('orderType',1).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">Vuelo</a>
+                        </th:block>
+                    </th:block>
+                    </span>
+                </th>
+                <th class="hide-mobile">Comentarios</th>
+                <th class="small-column hide-mobile">
+                    <span>
+                    <th:block th:switch="${orderByFilter}">
+                        <th:block th:case="'STATUS'">
+                            <th:block th:if="${orderByType == 1}">
+                                <a class="order-by" th:href="${urlBuilder.replaceQueryParam('orderBy','STATUS').replaceQueryParam('orderType',2).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">Estado</a>
+                                <img class="arrow-filter no-margin" th:src="@{../images/arrow_up@64x36.png}"/>
+                            </th:block>
+                            <th:block th:if="${orderByType == 2}">
+                                <a class="order-by" th:href="${urlBuilder.replaceQueryParam('orderBy','STATUS').replaceQueryParam('orderType',1).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">Estado</a>
+                                <img class="arrow-filter no-margin" th:src="@{../images/arrow_down@64x36.png}"/>
+                            </th:block>
+                        </th:block>
+                        <th:block th:case="*">
+                            <a class="order-by" th:href="${urlBuilder.replaceQueryParam('orderBy','STATUS').replaceQueryParam('orderType',1).toUriString().replaceAll('%253A',':').replaceAll('%2B','+')}">Estado</a>
+                        </th:block>
+                    </th:block>
+                    </span>
+                </th>
+            </th:block>
+        </tr>
+        <div th:if="${reservations != null }">
+            <form id="reservation-list"
+                  th:type="POST">
+                <th:block th:each="iterator : ${reservations}">
+                    <tr>
+                        <td class="small-column" align="center">
+                            <label  class="switch">
+                                <input type="checkbox"  th:value="${iterator[0].idReservationPk}" th:name="ids" />
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                        <td class="small-column">
+                            <a class="link-reservation-id"
+                               th:href="'/admin/reservas/'+${iterator[0].idReservationPk}"
+                               th:text="${iterator[0].idReservationPk}"></a>
+                        </td>
+                        <td th:text="${iterator[1]}"/>
+                        <td th:text="${iterator[0].lastname+', '+iterator[0].nameRepresent}"/>
+                        <td class="hide-mobile small-column" th:text="${iterator[0].totalPax}"/>
+                        <td class="date-element" th:text="${iterator[0].arrivalDate}"></td>
+                        <td class="hide-mobile small-column time" th:text="${iterator[0].expectedArrivalTime}"></td>
+                        <td th:text="${iterator[0].initials_fk+iterator[0].flightNumber}"/>
+                        <td th:with="annotations=${iterator[0].annotations}" class="hide-mobile">
+                            <th:block th:unless="${#strings.isEmpty(annotations)}">
+                                <th:block th:each="comment,status : ${#strings.arraySplit(annotations, ',')}">
+                                    <span class="tag" th:text="${comment}"></span>
+                                </th:block>
+                            </th:block>
+                            <th:block th:if="${#strings.isEmpty(annotations)}">
+                                Sin comentarios.
+                            </th:block>
+                        </td>
+                        <td align="center" class="hide-mobile small-column">
+                            <th:block th:switch="${iterator[0].state}">
+                                <div th:case="2">
+                                    <img class="state-image" title="No recibida" alt="No recibida" th:src="@{../images/Equis-Estado@50x50.png}"/>
+                                </div>
+                                <div th:case="1">
+                                    <img class="state-image" title="Confirmada" alt="Confirmada" th:src="@{../images/Check-Estado@50x50.png}"/>
+                                </div>
+                                <div th:case="0">
+                                    <img class="state-image" title="Pendiente" alt="Pendiente" th:src="@{../images/Pendiente-Estado@50x50.png}"/>
+                                </div>
+                            </th:block>
+                        </td>
+                    </tr>
+                </th:block>
+            </form>
+        </div>
+    </table>
+    <div class="empty-table-text" th:if="${reservations == null or #lists.isEmpty(reservations)}">
+        <span>No se encontraron reservas en estas fechas.</span>
+    </div>
+</div>
+</section>
+</body>
+</html>

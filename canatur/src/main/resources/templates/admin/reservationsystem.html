@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Nueva Reservación</title>
+    <link th:href="@{../css/reservation_system_container.css}" href="../static/css/reservation_system_container.css"
+          rel="stylesheet" type="text/css" media="screen"/>
+    <link th:href="@{../css/buttons.css}" href="../../static/css/buttons.css"
+          rel="stylesheet" type="text/css" media="screen"/>
+</head>
+<body>
+<div class="container">
+    <div class="menu_container">
+        <button class="selected">
+            NUEVA RESERVACIÓN
+        </button>
+        <button>
+            RESERVAS
+        </button>
+        <button>
+            REPORTES
+        </button>
+    </div>
+    <!--form action="reservationsystem.html" th:action="@../templates/reservationsystem.html" th:object="${reservation}" method="post"-->
+    <div class="form_container">
+        <div class="wrapper">
+            <label>Pasajero Representante</label>
+            <div class="row">
+                <div class="pair_left">
+                    <label>Nombre</label><label class="asterisk">*</label><br/>
+                    <input type="text" placeholder="Nombre"/>
+                </div>
+                <div class="pair_right">
+                    <label>Apellidos</label><label class="asterisk">*</label><br/>
+                    <input type="text" placeholder="Apellidos"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="pair_left">
+                    <label>Aerolínea</label><label class="asterisk">*</label><br/>
+                    <select class="long"><!--th:field="*{airline}"-->
+                        <option>
+                            opción A
+                        </option>
+                        <option>
+                            opción B
+                        </option>
+                    </select>
+                </div>
+                <div class="pair_right">
+                    <label>Vuelo</label><label class="asterisk">*</label><br/>
+                    <select class="short">
+                        <option>opción A</option>
+                        <option>opción B</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="pair_left">
+                    <label>Fecha de la reservación</label><label class="asterisk">*</label><br/>
+                    <input type="date"/>
+                </div>
+                <div class="pair_right">
+                    <label>Cantidad de pasajeros</label><label class="asterisk">*</label><br/>
+                    <input type="number" min="1" max="30"/>
+                </div>
+            </div>
+            <div class="row">
+                <label>Comentarios</label>
+            </div>
+            <button class="general">
+                Agregar
+            </button>
+        </div>
+    </div>
+    <!--/form-->
+</div>
+<div class="footer">
+    <div th:fragment="copy">
+        &copy; 2017 DAMBO
+    </div>
+</div>
+</body>
+</html>

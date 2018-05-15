@@ -1,0 +1,55 @@
+.airplane-initial-state{
+    enable-background:new 0 0 512.001 512.001;
+    position: absolute;
+    top:80%;
+    left: 80%;
+    transform: translateY(-50%);
+    animation-name: airplane-movement;
+    animation-duration: 0.5s;
+    animation-timing-function: ease;
+}
+
+@keyframes airplane-movement {
+    0% {left: 0%;}
+    100% {left: 80%}
+}
+
+.airline-name-initial-state{
+    opacity: 0;
+    position: absolute;
+    top: 70%;
+    right: 10%;
+    transform: translateY(-50%);
+    animation-name: airline-appearing;
+    animation-fill-mode: both;
+    animation-delay: 0.5s;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    font-size: 5em;
+    text-align: right;
+}
+
+@keyframes airline-appearing{
+    0% {opacity: 0; filter: blur(20px);}
+    100%{opacity: 1;filter: blur(0px);}
+}
+
+#airplane-smoke{
+    position: absolute;
+    top:81%;
+    left:0%;
+    height: 3px;
+    transform: translateY(-50%);
+    border:0px solid #000000;
+    background-color: #00A921;
+    animation-name: airplane-smoking;
+    animation-duration: 0.5s;
+    animation-timing-function: ease;
+    animation-fill-mode: both;
+}
+
+@keyframes airplane-smoking{
+    0%{width:0%;}
+    100%{width:82%;}
+
+}

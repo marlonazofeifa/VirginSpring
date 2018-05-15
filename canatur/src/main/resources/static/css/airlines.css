@@ -1,0 +1,427 @@
+.frame-manager{
+    height: 100%;
+    height: -webkit-fill-available;
+    height: -moz-available;
+    width: 100%;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    display: flex;
+}
+
+.accordion {
+    border-color: lightgrey;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+    border-left-width: 0px;
+    border-right-width: 1px;
+    border-style: solid;
+    height: 100%;
+    height: -webkit-fill-available;
+
+    display: block;
+}
+
+.top-in-add-airline{
+
+}
+
+#content-viewer{
+    float: left;
+    width: 85%;
+}
+
+#container-page{
+    width: 100%;
+    height: 100%;
+    height: -webkit-fill-available;
+    border:0px;
+}
+
+@supports (-ms-ime-align: auto) {
+    @media screen and (max-height: 2048px){
+        #frame-manager{
+            height: 1964px;
+        }
+    }
+
+    @media screen and (max-height: 1756px){
+        #frame-manager{
+            height: 1682px;
+        }
+    }
+
+    @media screen and (max-height: 1500px){
+        #frame-manager{
+            height: 1416px;
+        }
+    }
+
+    @media screen and (max-height: 1024px){
+        #frame-manager{
+            height: 940px;
+        }
+    }
+
+    @media screen and (max-height: 768px){
+        #frame-manager{
+            height: 684px;
+        }
+    }
+
+    @media screen and (max-height: 512px){
+        #frame-manager{
+            height: 428px;
+        }
+    }
+
+    @media screen and (max-height: 256px){
+        #frame-manager{
+            height: 256px;
+        }
+    }
+}
+
+@-moz-document url-prefix() {
+    @media screen and (max-height: 2048px){
+        #frame-manager{
+            height: 1964px;
+        }
+    }
+
+    @media screen and (max-height: 1756px){
+        #frame-manager{
+            height: 1682px;
+        }
+    }
+
+
+    @media screen and (max-height: 1500px){
+        #frame-manager{
+            height: 1416px;
+        }
+    }
+
+    @media screen and (max-height: 1024px){
+        #frame-manager{
+            height: 940px;
+        }
+    }
+
+    @media screen and (max-height: 768px){
+        #frame-manager{
+            height: 684px;
+        }
+    }
+
+    @media screen and (max-height: 512px){
+        #frame-manager{
+            height: 428px;
+        }
+    }
+
+    @media screen and (max-height: 256px){
+        #frame-manager{
+            height: 256px;
+        }
+    }
+}
+
+/*-----RELATED WITH AIRLINES-----*/
+
+#airlines-selector{
+    float: left;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s;
+    width: 15%;
+}
+
+
+#airlines-header {
+    text-align: center;
+    vertical-align: middle;
+    background: grey;
+    color: #FFF;
+    height: 3em;
+    line-height: 3em;
+    width: 100%;
+    border-bottom: 1px;
+    border-color: lightgrey;
+    box-shadow: 0px 8px 8px -4px rgba(0, 0, 0, 0.2);
+}
+
+
+#airlines-filter{
+    width: 100%;
+    height: 2.5em;
+    line-height: 2.5em;
+    vertical-align: middle;
+    border:0px;
+    border-bottom: 1px;
+    border-color: lightgrey;
+    border-style:solid;
+    color: #808080;
+    padding: 0.5em;
+    display:flex;
+}
+
+#airlines-section{
+    flex:auto;
+    overflow: auto;
+}
+
+#airlines-section::-webkit-scrollbar-track
+{
+    background-color:transparent;
+}
+
+#airlines-section::-webkit-scrollbar
+{
+    width: 5px;
+    background-color: transparent;
+}
+
+#airlines-section::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
+
+.airline-element{
+    display: flex;
+    border:0px;
+    border-bottom:1px lightgrey solid;
+    height: 2em;
+    line-height: 2em;
+    vertical-align: middle;
+    background-color: white;
+}
+
+.airline-element-name{
+    height: 100%;
+    vertical-align: middle;
+    color:grey;
+    background-color: transparent;
+    transition: background-color 0.3s, color 0.3s;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+
+.airline-element-lookflights{
+    width: 2em;
+    height: 100%;
+    line-height: 100%;
+    vertical-align: middle;
+    text-align: center;
+    border:0px;
+    border-left: 1px solid lightgrey;
+    padding: 0.5em;
+    background-color: transparent;
+    transition: background-color 0.3s, color 0.3s;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+}
+
+.airline-element-lookflights:hover{
+    background-color: var(--canatur-verde);
+    color: white!important;
+}
+
+#airlines-footer{
+     height: 2.5em;
+     line-height: 2.5em;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 100%;
+     width: -webkit-fill-available;
+     vertical-align: middle;
+     border: 0px;
+     border-style: solid;
+     border-top: 1px;
+     border-color: lightgrey;
+     box-shadow: 0px -8px 8px -4px rgba(0, 0, 0, 0.2);
+     z-index: 1;
+     cursor: pointer;
+    transition: box-shadow 0.1s, height 0.1s, line-height 0.1s;
+ }
+
+#airlines-footer:hover{
+    height: 2.6em;
+    line-height: 2.6em;
+    box-shadow: 0px -8px 8px 0px rgba(0, 0, 0, 0.2);
+}
+/*-----RELATED WITH FLIGHTS-----*/
+
+#flight-selector{
+    float: left;
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+}
+
+#flights-header {
+    text-align: center;
+    vertical-align: middle;
+    background: grey;
+    color: #FFF;
+    height: 3em;
+    line-height: 3em;
+    width: 100%;
+    border-bottom: 1px;
+    border-color: lightgrey;
+    box-shadow: 0px 8px 8px -4px rgba(0, 0, 0, 0.2);
+}
+
+
+.filter-input{
+     border:0px;
+     font-size:1em;
+     width: 75%;
+     margin-left: 0.5em;
+     flex:1;
+ }
+
+.filter-input:focus{
+    border:0px;
+    border-bottom: 1px;
+    border-style:solid;
+    border-color: #808080;
+    outline: 0px;
+}
+
+#flights-filter{
+    width: 100%;
+    height: 2.5em;
+    line-height: 2.5em;
+    vertical-align: middle;
+    border:0px;
+    border-bottom: 1px;
+    border-color: lightgrey;
+    border-style:solid;
+    color: #808080;
+    padding: 0.5em;
+    display:flex;
+
+}
+
+#flights-section{
+    flex:auto;
+    overflow: auto;
+}
+
+
+#flights-section::-webkit-scrollbar-track
+{
+    background-color:transparent;
+}
+
+#flights-section::-webkit-scrollbar
+{
+    width: 5px;
+    background-color: transparent;
+}
+
+#flights-section::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
+
+.flight-element{
+    display: flex;
+    border:0px;
+    border-bottom:1px lightgrey solid;
+    height: 2em;
+    line-height: 2em;
+    vertical-align: middle;
+}
+
+.flight-element-name{
+    flex:auto;
+    height: 100%;
+    vertical-align: middle;
+    color:grey;
+    padding-left: 1em;
+    background-color: white;
+    transition: background-color 0.3s, color 0.3s;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+}
+
+.flight-element-name:hover{
+    background-color: grey;
+    color: white;
+}
+
+.flight-element-available{
+    width: 2em;
+    height: 100%;
+    line-height: 100%;
+    vertical-align: middle;
+    text-align: center;
+    border:0px;
+    border-left: 1px solid lightgrey;
+    padding: 0.5em;
+    transition: background-color 0.3s, color 0.3s;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+}
+
+#flights-footer{
+    height: 2.5em;
+    line-height: 2.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    width: -webkit-fill-available;
+    vertical-align: middle;
+    border: 0px;
+    border-style: solid;
+    border-top: 1px;
+    border-color: lightgrey;
+    box-shadow: 0px -8px 8px -4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    cursor: pointer;
+    transition: box-shadow 0.1s, height 0.1s, line-height 0.1s;
+}
+
+#flights-footer:hover{
+    height: 2.6em;
+    line-height: 2.6em;
+    box-shadow: 0px -8px 8px 0px rgba(0, 0, 0, 0.2);
+}
+
+#content {
+    padding:0px!important;
+    padding-top: var(--header-size)!important;
+}
+
+#summer-schedule-manager{
+    padding: 0.25em;
+    position: absolute;
+    top: 10%;
+    right: 0;
+    height: 3em;
+    width: 4em;
+    background-color: #F5C525;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    cursor: pointer;
+    transition: width 0.25s ease, height 0.25s ease, box-shadow 0.25s ease, -moz-box-shadow 0.25s ease, -webkit-box-shadow 0.25s ease;
+}
+
+#summer-schedule-manager:hover{
+    height: 3.25em;
+    width: 5em;
+    background-color: #F5C525;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    z-index: 9999;
+}

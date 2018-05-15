@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!-- Remember to change the page title every time we create a new one -->
+    <!-- Change Plantilla for whatever name the page should have. -->
+    <th:block th:replace="admin/layouts/layout :: default-head('Reserva '+${reservationId})"></th:block>
+    <!-- Add new css and js in here! -->
+    <th:block th:replace="admin/layouts/reservations-form :: form-header"></th:block>
+</head>
+<body>
+<!-- This is the default top-menu of our page -->
+<section layout:replace="admin/layouts/layout :: default-top-menu"></section>
+<section layout:insert="admin/layouts/layout :: default-body(~{ :: #content}, '0')">
+    <section layout:replace="admin/layouts/layout :: default-sidebar"></section>
+    <section id="content" class="column-right">
+        <!-- Here we add our page content. Everything else is meant to be the same for every page. -->
+        <section layout:replace="admin/layouts/reservations-form :: form-body" layout:remove="tag"></section>
+    </section>
+</section>
+<section layout:replace="admin/layouts/layout :: default-footer" />
+</body>
+</html>

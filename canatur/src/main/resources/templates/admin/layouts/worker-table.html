@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <th:block th:fragment="worker-table">
+        <link rel="stylesheet" th:href="@{../css/reservations.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../css/buttons.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../css/general.css}" type="text/css"/>
+        <script type="text/javascript" th:src="@{../js/jquery-3.2.1.min.js}"></script>
+        <script type="text/javascript" th:src="@{../js/cool-alerts.js}"></script>
+        <script type="text/javascript" th:src="@{../js/messages-alert.js}"></script>
+    </th:block>
+</head>
+
+<body>
+<div style="margin-left: 5px; margin-bottom: 20px">
+    <section layout:fragment="Funcionarios">
+        <div class="float-left" style="margin-top: 20px; margin-bottom: 20px">
+            <h1 style=" align-content: center" th:text="FUNCIONARIOS"></h1>
+            <form action="/admin/registrar-funcionario" sec:authorize="hasAuthority('BOSS')">
+                <button type="submit" class="general">AGREGAR FUNCIONARIO</button>
+            </form>
+        </div>
+        <p id="message-alert" class="not-visible" th:text="${postMessage}"></p>
+        <p id="message-alert-type" class="not-visible" th:text="${postMessageType}"></p>
+        <div class="content-wrapper" style="margin-top: 20px ;display: inline-block; width: 100%;">
+            <div class="table-container">
+                <table class="full-size" id="workers-table">
+                    <tr class="table-header">
+                        <!-- Variable that will be used to build our current url -->
+                        <th:block th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+                            <th class="small-column"><input type="checkbox" id="selectAll"/></th>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                        </th:block>
+                    </tr>
+                    <div th:if="${workers != null }">
+                        <th:block th:each="iterator : ${workers}">
+                            <tr>
+                                <td class="small-column" align="center">
+                                    <label class="switch">
+                                        <input type="checkbox" th:value="${iterator.userId}"/>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td th:text="${iterator.userId}"/>
+                                <td th:text="${iterator.name}"/>
+                                <th:block th:switch="${iterator.roleId}">
+                                    <div th:case="2">
+                                        <td th:text="Jefe"/>
+                                    </div>
+                                    <div th:case="1">
+                                        <td th:text="Funcionario"/>
+                                    </div>
+                                </th:block>
+                                <td th:text="${iterator.email}"/>
+                                <td th:text="${iterator.principalTelephone}"/>
+                            </tr>
+                        </th:block>
+                    </div>
+                </table>
+                <div class="empty-table-text" th:if="${workers == null or #lists.isEmpty(workers)}">
+                    <span>No hay funcionarios registrados</span>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <property name="hibernate.dialect">
+            org.hibernate.dialect.MySQLDialect
+        </property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://18.217.244.16:3306/Canatur?useSSL=false</property>
+        <property name="hibernate.connection.username">dambo</property>
+        <property name="hibernate.connection.password">damboremote</property>
+        <property name="show_sql">true</property>
+
+        <!-- C3p0 -->
+        <property name="hibernate.c3p0.acquire_increment">1</property>
+        <property name="hibernate.c3p0.idle_test_period">300</property>
+        <property name="hibernate.c3p0.timeout">600</property>
+        <property name="hibernate.c3p0.max_size">25</property>
+        <property name="hibernate.c3p0.min_size">1</property>
+        <property name="hibernate.c3p0.max_statement">0</property>
+        <property name="hibernate.c3p0.preferredTestQuery">select 1;</property>
+
+        <!-- Si el modelo cambia, descomentar la linea siguiente. -->
+        <!--<property name="hbm2ddl.auto">update</property>-->
+        <mapping class="application.model.Airline"></mapping>
+        <mapping class="application.model.Flight"></mapping>
+        <mapping class="application.model.FlightPK"></mapping>
+        <mapping class="application.model.Reservation"></mapping>
+        <mapping class="application.model.Schedule"></mapping>
+        <mapping class="application.model.SchedulePK"></mapping>
+        <mapping class="application.model.Partner"></mapping>
+        <mapping class="application.model.Worker"></mapping>
+        <mapping class="application.model.Role"></mapping>
+
+    </session-factory>
+</hibernate-configuration>

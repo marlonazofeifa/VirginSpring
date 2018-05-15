@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:fragment="add-airline">
+        <link rel="stylesheet" th:href="@{../../css/bootstrap.min.css}"/>
+        <link rel="stylesheet" th:href="@{../../css/general.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../../css/buttons.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../../css/edit-airlines.css}" type="text/css"/>
+        <!--script th:src="@{js/reservations.js}"></script-->
+        <script type="text/javascript" th:src="@{../../js/jquery-3.2.1.min.js}"></script>
+        <script type="text/javascript" th:src="@{../../js/airline.js}"></script>
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"/>
+    </th:block>
+</head>
+<body style="padding: 2em">
+<h1 style="margin: 0;" th:text="'AEROLÍNEA ' + ${initials}"></h1>
+
+<form class="content-wrapper-add" action="#" method="post" th:action="@{/admin/salvar-edicion-aerolinea}">
+    <fieldset class="form-vertical container-airline-fields">
+        <div style="background-image: url('../../images/airplane-2598351_1920.jpg');height: 5em;background-attachment: fixed;background-repeat: no-repeat;background-position-x: center;background-position-y: -175px;border-top-left-radius: 5px;border-top-right-radius: 5px;     margin-top: -1.5em; margin-left: -1.5em; margin-right: -1.5em;"></div>
+        <div class="field form-control-wide ">
+            <fieldset class="form-vertical" style="border: 0">
+                <div class="field textbox-fields" style="width: 15%; display: flex;flex-direction: column;">
+                    <label style="margin-top: 0.25em; margin-right: 0.75em; margin-bottom: auto">Activo</label>
+                    <label class="switch" style="margin-top: 0.25em">
+                        <input name="state" type="checkbox" th:checked="${state}"/>
+                        <span class="slider round"></span>
+                    </label>
+
+                </div>
+                <div class="field textbox-fields" style="width: 10%; line-height: 2em;">
+                    <input name="initials" class="initials-input" th:hidden="true" th:value="${initials}" th:text="${initials}"/>
+                </div>
+                <div class="field textbox-fields" style="width: 75%;">
+                    <input name="name" type="text" class="form-control form-control-wide" th:alt="Nombre" th:placeholder="Nombre" th:value="${name}"/>
+                </div>
+            </fieldset>
+        </div>
+        <div class="row form-row" align="right">
+            <button type="submit" id="btn-salvar" class="general small" >REGISTRAR CAMBIOS</button>
+
+        </div>
+    </fieldset>
+</form>
+<!--</section>-->
+</body>
+</html>

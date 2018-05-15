@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:fragment="add-airline">
+        <link rel="stylesheet" th:href="@{../../css/bootstrap.min.css}"/>
+        <link rel="stylesheet" th:href="@{../../css/summer-schedule.css}"/>
+        <link rel="stylesheet" th:href="@{../../css/general.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../../css/buttons.css}" type="text/css"/>
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"/>
+        <!--link rel="stylesheet" th:href="@{../css/nuevareservacion.css}" type="text/css"/-->
+
+
+        <!--script th:src="@{js/reservations.js}"></script-->
+        <script type="text/javascript" th:src="@{../../js/jquery-3.2.1.min.js}"></script>
+        <script type="text/javascript" th:src="@{../../js/summer-schedule-manager.js}"></script>
+    </th:block>
+</head>
+
+<body style="padding: 2em">
+<h1 style="margin: 0;">Gestión de Horarios de Verano</h1>
+
+<form class="content-wrapper-add" action="#" method="get" th:action="@{/admin/salvar-Horarios-Verano}">
+    <fieldset class="form-vertical container-airline-fields">
+        <div style="background-image: url('../../images/airplane-2598351_1920.jpg');height: 5em;background-attachment: fixed;background-repeat: no-repeat;background-position-x: center;background-position-y: -175px;border-top-left-radius: 5px;border-top-right-radius: 5px;     margin-top: -1.5em; margin-left: -1.5em; margin-right: -1.5em;"></div>
+        <div class="field form-control-wide ">
+            <fieldset class="form-vertical" style="border: 0">
+                <div class="field textbox-fields">
+                    <label> Región a modificar:</label>
+                    <input th:name="country"  id="country"  list="countries"  class="form-control form-control-wide" th:placeholder="Región"/>
+                    <datalist label="País" id="countries">
+
+                        <th:block th:each="iterator : ${countries}">
+                            <option  th:value="${iterator}" ></option>
+                        </th:block>
+                    </datalist>
+                </div>
+            </fieldset>
+        </div>
+        <div class="field form-control-wide " style="margin-top: 0em;">
+            <fieldset class="form-vertical" style="border: 0">
+                <div class="field textbox-fields">
+                    <label> Inicio de Verano</label>
+                    <input id="initialSummerDay" name="initialSummerDay" type="date" class="form-control form-control-wide" placeholder="Fecha inicial de verano"/>
+                </div>
+                <div class="field textbox-fields">
+                    <label> Último Día de Verano</label>
+                    <input id="lastSummerDay" name="lastSummerDay" type="date" class="form-control form-control-wide" placeholder="último día de verano"/>
+                </div>
+            </fieldset>
+        </div>
+        <div class="row form-row" align="right">
+            <button type="submit" id="btn-salvar" class="general small" >Guardar Cambios</button>
+
+        </div>
+    </fieldset>
+
+</form>
+<!--</section>-->
+</body>
+</html>

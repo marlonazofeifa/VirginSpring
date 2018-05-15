@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:fragment="default-head(pageTitle)">
+        <meta charset="UTF-8"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <link rel="icon" type="image/png" sizes="32x32" th:href="@{../../images/favicon-32.png}"/>
+        <link rel="stylesheet" th:href="@{../../css/general.css}" type="text/css" />
+        <link rel="stylesheet" th:href="@{../../css/buttons.css}" type="text/css"/>
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"/>
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+        <title th:text="'Sistema de Reservaciones Canatur - '+${pageTitle}+''"></title>
+    </th:block>
+</head>
+<body>
+<section layout:fragment="default-top-menu" id="top-menu">
+    <div class="outer">
+        <div class="top-menu-holder">
+            <p class="top-menu-date hide-mobile" th:text="'Fecha: ' + ${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></p>
+            <a class="profile-links" href="/logout">Cerrar Sesión</a>
+            <a class="profile-links" href="/admin/editar-perfil">Administrar Perfil</a>
+            <div class="profile-display">
+                <img alt="Canatur" th:src="@{../../images/profile-icon.png}" />
+                <a href="#" th:text="'¡Hola, '+ |${#authentication.getName().split(',')[1]}| + '!'">Hola, Canatur!</a>
+                <ul class="profile-menu">
+                    <li><a href="/admin/editar-perfil">Administrar Perfil</a></li>
+                    <li><a href="/logout">Cerrar Sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="default-body(content)" id="body" class="width">
+    <aside layout:fragment="default-sidebar" id="sidebar" class="column-left">
+        <header>
+            <div id="logo-wrapper">
+                <a href="#">
+                    <img th:src="@{../../images/logo-canatur@168x55px.png}"/>
+                </a>
+            </div>
+            <h2>Sistema de Reservas</h2>
+        </header>
+        <nav id="mainnav">
+            <ul>
+                <!-- Remeber to change the selected-item class for the page we are in. This is changed, depending on the URL. -->
+                <th:block th:with="url=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+                <li th:classappend="${#strings.contains(url.toUriString(),'reservas') || #strings.contains(url.toUriString(),'nuevareservacion')} ? selected-item : not-selected">
+                    <a href="/admin/reservas">Reservaciones</a>
+                </li>
+                <li th:classappend="${#strings.contains(url.toUriString(),'reportes')} ? selected-item : not-selected">
+                    <a href="/admin/reportes">Reportes</a>
+                </li>
+                <li th:classappend="${#strings.contains(url.toUriString(),'aerolineas')} ? selected-item : not-selected">
+                    <a href="/admin/aerolineas">Aerolíneas</a>
+                </li>
+                <li th:classappend="${#strings.contains(url.toUriString(),'afiliados')} ? selected-item : not-selected">
+                    <a href="/admin/afiliados">Afiliados</a>
+                </li >
+
+                <li th:classappend="${#strings.contains(url.toUriString(),'funcionarios')} ? selected-item : not-selected" sec:authorize="hasAuthority('BOSS')">
+                    <a href="/admin/funcionarios">Funcionarios</a></li>
+                </th:block>
+            </ul>
+        </nav>
+    </aside>
+
+
+    <section id="content" class="column-right" th:replace="${content}">
+        <!-- Here we add our page content. Everything else is meant to be the same for every page. -->
+    </section>
+</section>
+<section layout:fragment="default-footer">
+<div class="clear"></div>
+<footer  class="clear">
+    <p>Powered by &copy; 2017 DAMBO Corporation.</p>
+</footer>
+</section>
+</body>
+</html>

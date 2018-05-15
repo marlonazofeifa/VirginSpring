@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <th:block th:replace="admin/layouts/layout :: default-head('Editar perfil')"></th:block>
+    <link rel="stylesheet" th:href="@{../css/general.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{../css/buttons.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{../css/registration.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{../css/editprofile.css}" type="text/css"/>
+    <script type="text/javascript" th:src="@{../js/registration.js}"></script>
+    <script type="text/javascript" th:src="@{../js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{../js/cool-alerts.js}"></script>
+    <script type="text/javascript" th:src="@{../js/messages-alert.js}"></script>
+</head>
+<body>
+<section layout:replace="admin/layouts/layout :: default-top-menu"></section>
+<section layout:insert="admin/layouts/layout :: default-body(~{ :: #content})">
+    <section layout:replace="admin/layouts/layout :: default-sidebar"></section>
+
+    <section id="content" class="column-right">
+        <div class="display-flex">
+            <h1>EDITAR INFORMACIÓN DE AFILIADO - USUARIO <strong th:text="*{currentUsername}"></strong></h1>
+        </div>
+        <p id="message-alert" class="not-visible" th:text="${postMessage}"></p>
+        <p id="message-alert-type" class="not-visible" th:text="${postMessageType}"></p>
+        <div id="registration-form" class="registration-container container">
+
+            <form action="#" autocomplete="off" class="form-horizontal" method="post" role="form" th:action="@{/admin/editar-afiliado}" th:object="${currentPartner}">
+
+                <label class="control-label form-label">
+                    <h2>Información sobre usuario</h2>
+                </label>
+
+                <fieldset class="hide">
+                    <input class="hide" name="currentUsername" type="text" th:value="${currentUsername}"/>
+                </fieldset>
+
+                <div class="user-information compound">
+
+                    <div class="row form-row">
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Nombre de afiliado<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field name">
+                                        <input type="text" class="form-control form-control-wide" placeholder="Nombre de afiliado" th:field="*{name}" size="50"/>
+                                    </div>
+                                </fieldset>
+                                <div class="error-message" th:if="${param.error}">
+                                    <p th:if="${param.error[0] == 'emptyName'}">Campo requerido, por favor, escriba un nombre válido</p>
+                                    <p th:if="${param.error[0] == 'duplicateName'}">El nombre ya está asociado a otro afiliado</p>
+
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset id="email" class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Correo electrónico<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field email">
+                                        <input type="email" class="form-control form-control-wide" placeholder="Correo electrónico" th:field="*{email}" size="50"/>
+                                    </div>
+                                </fieldset>
+                                <div class="error-message" th:if="${param.error}">
+                                    <p th:if="${param.error[0] == 'duplicateEmail'}"> El correo escrito anteriormente ya
+                                        está asociado a otra cuenta</p>
+                                    <p th:if="${param.error[0] == 'emptyEmail'}">Escriba un correo válido</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="row form-row">
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Número de teléfono<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field tel">
+                                        <input type="tel" class="form-control form-control-wide" placeholder="88888888" th:field="*{principalTelephone}" size="50"/>
+                                    </div>
+                                </fieldset>
+                                <div class="error-message" th:if="${param.error}">
+                                    <p th:if="${param.error[0] == 'wrongNumber'}">Campo obligatorio, número de teléfono inválido</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Número de teléfono de emergencia<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field tel-2">
+                                        <input type="tel" class="form-control form-control-wide" placeholder="*{emergencyTelephone}" th:field="*{emergencyTelephone}" size="50"/>
+                                    </div>
+                                </fieldset>
+                                <div class="error-message" th:if="${param.error}">
+                                    <p th:if="${param.error[0] == 'wrongNumber2'}">Campo obligatorio, número de teléfono inválido</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="row form-row">
+                        <fieldset class="form-vertical field">
+                            <div class="field form-control-wide ">
+                                <label class="control-label form-label">
+                                    <h3>Tipo de afiliado<span class="mark">*</span></h3>
+                                </label>
+                                <fieldset class="form-vertical">
+                                    <div class="field tel-2">
+                                        <select id="partner-type" name="type" th:field="*{partnerType}">
+                                            <optgroup label="Estado">
+                                                <option th:value="1" selected="selected">
+                                                    Afiliado
+                                                </option>
+                                                <option th:value="0">
+                                                    No Afiliado
+                                                </option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row form-row" align="right">
+                    <a href="/admin/afiliados">
+                        <button type="button" id="btn-cancelar" class="general medium">CANCELAR</button>
+                    </a>
+                    <button type="submit" id="btn-salvar" class="general medium">GUARDAR CAMBIOS</button>
+                </div>
+
+            </form>
+        </div>
+
+    </section>
+</section>
+
+<section layout:replace="admin/layouts/layout :: default-footer"></section>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:fragment="form-header">
+        <link rel="stylesheet" th:href="@{../../css/reservation-form.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../../css/tags-input.css}" type="text/css"/>
+        <script th:src="@{../../js/jquery-3.2.1.min.js}"/>
+        <script th:src="@{../../js/cool-alerts.js}"></script>
+        <script th:src="@{../../js/messages-alert.js}"></script>
+        <script type="text/javascript" th:src="@{../../js/tags-input.js}"></script>
+        <script type="text/javascript" th:src="@{../../js/reservation-form.js}"></script>
+    </th:block>
+</head>
+<body>
+<section layout:fragment="form-body">
+    <div class="display-flex">
+        <h1  th:text="'Reserva Id: '+ ${reservation.idReservationPk}"></h1>
+        <span class="display-inline">
+            <form id="delete-reservation" class="small-margin-left" th:method="POST">
+                <button id="delete-button" type="button" class="red general medium">Borrar</button>
+            </form>
+        </span>
+    </div>
+    <p id="message-alert" class="not-visible" th:text="${postMessage}"></p>
+    <p id="message-alert-type" class="not-visible" th:text="${postMessageType}"></p>
+    <!-- Partner container -->
+    <div class="reservation-form-container form-container">
+        <h2 th:text="'Afiliado: '+${partner.name}">
+        </h2>
+        <span class="full-size display-inline">
+            <span class="half display-inline input-container">
+                <h3>Datos</h3>
+                <p th:text="'Id: ' + ${partner.numId}"></p>
+                <th:block th:if="${partner.partnerType eq 1}">
+                    <p th:text="'Email: ' + ${partner.email}"></p>
+                </th:block>
+                <p th:text="'Teléfono principal: ' + ${partner.principalTelephone}"></p>
+                <p th:text="'Teléfono de emergencias: ' + ${partner.emergencyTelephone}"></p>
+                <th:block th:if="${partner.partnerType eq 1}">
+                    <span class="control no-margin">
+                        <p>Tipo de afiliado: <font color="#3EAB34"> Afiliado.</font></p>
+                    </span>
+                </th:block>
+                <th:block th:if="${partner.partnerType != 1}">
+                    <span class="control no-margin">
+                        <p>Tipo de afiliado: <font color="red"> No afiliado.</font></p>
+                    </span>
+                </th:block>
+            </span>
+        </span>
+    </div>
+    <!-- Reservation details -->
+    <div class="reservation-form-container form-container">
+        <h2>Detalles de la reserva</h2>
+        <span class="full-size display-inline">
+            <span class="full-size display-inline input-container">
+                <span class="full-size">
+                    <h3>Fecha de creación</h3>
+                    <p th:text="${reservation.creationDatetime}"></p>
+                </span>
+                <span class="full-size">
+                    <h3>Hecha por</h3>
+                    <div th:if="${reservation.idWorkerMakesFK} == null">
+                        <p th:text="'Id: '+${partner.numId}"></p>
+                        <p th:text="'Nombre: '+${partner.name}"></p>
+                        <span class="control no-margin"><p>Tipo de usuario: <font color="#3EAB34">Afiliado</font></p></span>
+                    </div>
+                    <div th:if="${reservation.idWorkerMakesFK} != null">
+                        <p th:text="'Id: '+${worker.userId}"></p>
+                        <p th:text="'Nombre: '+${worker.name}"></p>
+                        <span class="control no-margin"><p>Tipo de usuario: <font color="#3EAB34">Funcionario</font></p></span>
+                    </div>
+                </span>
+                <span class="full-size display-inline compound">
+                    <form id="modify-state" method="post">
+                        <span class="half align-top">
+                        <h3>Estado</h3>
+                        <th:block th:switch="${reservation.state}">
+                                <div th:case="2">
+                                    <span class="control no-margin"><p>Estado: <font color="red">No recibida</font></p></span>
+                                </div>
+                                <div th:case="1">
+                                    <span class="control no-margin"><p>Estado: <font color="#3EAB34">Recibida</font></p></span>
+                                </div>
+                                <div th:case="0">
+                                    <span class="control no-margin"><p>Estado: <font color="#9e2864">Pendiente</font></p></span>
+                                </div>
+                            </th:block>
+                        <th:block th:if="${reservation.idWorkerRecievesFK} != null">
+                            <span class="control no-margin"><p>Recibido por:
+                                <font th:text="${workerReceive.name}" color="#3EAB34"></font></p></span>
+                        </th:block>
+                    </span>
+                    <span class="half margin-left align-top">
+                        <h3>Acción</h3>
+                        <select id="action-selector" class="action-selector">
+                            <option disabled="disabled" th:value="notselected" selected="selected">Acción</option>
+                            <th:block th:with="role = ${#authentication.authorities[0]}">
+                                <option th:value="eliminar">
+                                    Eliminar
+                                </option>
+                                <th:block th:if="${#strings.equalsIgnoreCase(role,'BOSS')}">
+                                    <option th:value="cancelar">
+                                        Marcar como no recibida
+                                    </option>
+                                    <option th:value="pendiente">
+                                        Marcar como pendiente
+                                    </option>
+                                    <option th:value="confirmar">
+                                        Marcar como recibida
+                                    </option>
+                                </th:block>
+                            </th:block>
+                        </select>
+                        <div id="workers-container">
+                            <input id="workers-list"
+                                   list="workers"
+                                   class="action-selector rounded-border required-action"
+                                   placeholder="Funcionario encargado"/>
+                            <datalist id="workers">
+                                <th:block th:each="iterator : ${workers}">
+                                    <option th:value="${iterator.userId}"
+                                            th:text="${iterator.name}"></option>
+                                </th:block>
+                            </datalist>
+                            <p id="no-worker" style="color: red">Por favor, seleccione un funcionario.</p>
+                            <input class="time-selectors rounded-border required-action" th:type="time" id="arrival-time" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]"/>
+                        </div>
+                        <span class="full-size display-inline align-right">
+                            <button id="change-state" class="general small" type="button">Modificar</button>
+                        </span>
+                    </span>
+                    </form>
+                </span>
+            </span>
+        </span>
+    </div>
+    <!-- Reservation's information. -->
+    <div class="reservation-form-container">
+        <h2>Información General</h2>
+        <form id="reservation-info-section" class="form-container" th:object="${reservation}" method="post">
+            <input th:type="hidden" th:field="*{idReservationPk}" th:value="${reservation.idReservationPk}"/>
+            <input id="id-partner" type="hidden" disabled="disabled" name="idPartner" th:field="*{idPartnerFK}" th:value="${reservation.idPartnerFK}"/>
+            <!-- Main's name -->
+            <span class="full-size display-inline compound">
+                <span class="full-size no-margin">
+                    <h3><strong>Pasajero Representante</strong></h3>
+                </span>
+                <div class="half input-container">
+                    <span class="control no-margin"><label>Apellidos<font color="#CC0000">*</font></label></span>
+                    <input class="required" name="reservationLastName" th:field="*{lastname}" th:value="${reservation.lastname}"/>
+                </div>
+                <div class="half input-container margin-left">
+                    <span class="control no-margin"><label>Nombre<font color="#CC0000">*</font></label></span>
+                    <input class="required" name="reservationName" th:field="*{nameRepresent}" th:value="${reservation.nameRepresent}"/>
+                </div>
+            </span>
+            <span style="margin-bottom: 0em" class="full-size display-inline">
+                <span class="full-size no-margin">
+                    <h3><strong>Información de Vuelo</strong></h3>
+                </span>
+                <span class="fourth input-container">
+                    <span class="control no-margin"><label>Fecha de vuelo<font color="#CC0000">*</font></label></span>
+                    <input class="default-datalist rounded-border selector-big-width required"
+                           th:type="date"
+                           id="arrivalDate"
+                           placeholder="Fecha de arribo"
+                           th:field="*{arrivalDate}"
+                           th:value="${reservation.arrivalDate}"/>
+                </span>
+                <span class="fourth input-container margin-left">
+                    <span class="control no-margin"><label>Aerolínea<font color="#CC0000">*</font></label></span>
+                    <select class="rounded-border margin-right selector-big-width required"
+                           id="airline"
+                           placeholder="Aerolínea">
+                        <th:block th:each="iterator : ${airlines}">
+                            <option th:selected=" ${reservation.initials_fk == iterator.initialPk ? true : false}" th:value="${iterator.initialPk}" th:text="${iterator.name +': '+ iterator.initialPk}"> </option>
+                        </th:block>
+                    </select>
+                </span>
+                <span class="fourth input-container margin-left">
+                    <span class="control no-margin"><label>Número de vuelo<font color="#CC0000">*</font></label></span>
+                    <select class="rounded-border margin-right selector-big-width required"
+                            id="flight-number"
+                            placeholder="Número de Vuelo">
+                        <th:block th:if="${schedule != null}">
+                            <th:block th:each="iterator : ${flights}">
+                                <option th:selected=" ${schedule.flightNumber == iterator.flightNumber ? true : false}" th:value="${iterator.flightNumber}" th:text="${iterator.flightNumber}"> </option>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${schedule == null}">
+                            <th:block th:each="iterator : ${flights}">
+                                <option th:value="${iterator.flightNumber}" th:text="${iterator.flightNumber}"></option>
+                            </th:block>
+                            <option th:selected="selected" th:disabled="disabled" th:value="null" th:text="0"></option>
+                        </th:block>
+                    </select>
+                </span>
+                <span class="fourth input-container margin-left align-top">
+                    <span class="control no-margin"><label>Hora de vuelo</label></span>
+                    <th:block th:if="${schedule != null}">
+                        <div id="schedule-background" th:classappend="${springSchedule} ? back : back-disabled">
+                            <input style="margin-top: 0em" th:value="${schedule.arrivalHour}" id="flight-arrival-time" placeholder="--:--" disabled="true"/>
+                            <label id="summer-schedule" class="summer-schedule" th:text="${springSchedule} ? 'Horario de verano' : 'Horario normal'"></label>
+                        </div>
+                    </th:block>
+                    <th:block th:if="${schedule == null}">
+                        <div id="schedule-background" th:classappend="back-disabled">
+                            <input style="margin-top: 0em" th:value="null" id="flight-arrival-time" placeholder="--:--" disabled="true"/>
+                            <label id="summer-schedule" class="summer-schedule" th:text="'Horario normal'"></label>
+                        </div>
+                    </th:block>
+                </span>
+            </span>
+            <!-- Total pax -->
+            <span class="full-size display-inline align-right">
+                <span class="fourth input-container">
+                    <span class="control no-margin align-left"><label>Total de pasajeros<font color="#CC0000">*</font></label></span>
+                    <input class="required" type="number" th:field="*{totalPax}" th:value="${reservation.totalPax}" id="total-pax" min="0" max="99"/>
+                </span>
+            </span>
+            <!-- Passengers container -->
+            <span class="full-size display-inline">
+                <div class="full-size input-container">
+                    <div class="field form-control-wide full-size">
+                        <h3 class="control-label form-label" id = "lbl-passenger-info">Información de los pasajeros <label style="color: darkgray; font-size: smaller;">(Opcional)</label></h3>
+                        <div style="margin-top: 0.8em" class="full-size control">
+                            <th:block th:with="passengers=${reservation.extraPassengers}">
+                                    <th:block th:if="${passengers} != null and ${passengers} != ''">
+                                        <div id="passengers-container" class="full-size">
+                                            <th:block th:each="names, status : ${#strings.arraySplit(passengers, ',')}">
+                                                <th:block th:with="firstName = ${#strings.length(names) gt 1 ? #strings.arraySplit(names, ':')[0] : ''}">
+                                                    <th:block th:with="lastName =  ${(#strings.length(names)-#strings.length(firstName)) gt 1 ? #strings.arraySplit(names, ':')[1] : ''}">
+                                                        <div class="passenger-row compound full-size">
+                                                        <label class="control-label form-label passenger-index" th:text="${status.index+1}"></label>
+                                                        <input class="field form-control field-passenger-name margin-top passenger-first-name" type="text" placeholder="Nombre" th:value="${firstName}"/>
+                                                        <input class="field form-control field-passenger-name margin-top passenger-last-name" type="text" placeholder="Apellidos" th:value="${lastName}"/>
+                                                        <button type="button" class="btn-remove-passenger">
+                                                        <svg class="remove-passenger" width="2%" height="2em" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                                                            <circle style="fill:#D75A4A;" cx="25" cy="25" r="25"></circle>
+                                                            <polyline style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" points="16,34 25,25 34,16"></polyline>
+                                                            <polyline style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" points="16,16 25,25 34,34"></polyline>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    </th:block>
+                                                </th:block>
+                                            </th:block>
+                                            </div>
+                                            <button class="btn_add_passenger" type="button">
+                                                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" height="2em" viewBox="0 0 792 306" enable-background="new 0 0 792 306" xml:space="preserve">
+                                                    <path fill="#43B05C" d="M702,130c0,158.5-137.001,168-306,168S90,284.5,90,130C90,90.472,86.5,0,0,0s792,0,792,0S702,0,702,130z"></path>
+                                                    <line fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="396" y1="78.796" x2="396" y2="229.204"></line>
+                                                    <line fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="471.204" y1="150.992" x2="320.796" y2="150.992"></line>
+                                                </svg>
+                                            </button>
+                                    </th:block>
+                                    <th:block th:if="${passengers} == null or ${passengers} == ''">
+                                    <div id="passengers-container" class="full-size"></div>
+                                    <button class="btn_add_passenger" type="button">
+                                        <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="3em" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                                            <circle style="fill:#43B05C;" cx="25" cy="25" r="25"></circle>
+                                            <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="25" y1="13" x2="25" y2="38"></line>
+                                            <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="37.5" y1="25" x2="12.5" y2="25"></line>
+                                        </svg>
+                                        <label style="margin-left:0.5em;margin-bottom:0.7em;font-size:small">Añadir pasajero</label>
+                                    </button>
+                                </th:block>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </span>
+            <!-- Comment containers -->
+            <span class="full-size display-inline">
+                <div class="full-size input-container">
+                    <div class="field form-control-wide field-tags">
+                        <h3 class="control-label form-label">Comentarios</h3>
+                        <textarea class="control" rows="1"></textarea>
+                        <th:block th:if="${reservation.annotations != null}">
+                            <th:block th:with="annotations=${reservation.annotations}">
+                                <div class="tags-input" id="tags-input">
+                                        <th:block th:each="comment,status : ${#strings.arraySplit(annotations, ',')}">
+                                            <span class="tag" th:text="${comment}"></span>
+                                        </th:block>
+                                </div>
+                            </th:block>
+                        </th:block>
+                        <div class="favorite-tags control"></div>
+                        <label class="control-label form-label">
+                            <font size="1" color="#666666">Para comentarios más extendidos o consultas contactarnos al correo
+                                <a href="mailto:canaturato@canatur.org">canaturato@canatur.org</a>.
+                            </font>
+                        </label>
+                    </div>
+                </div>
+            </span>
+            <!-- end row -->
+            <span class="full-size display-inline align-right">
+                <button id="update-button" class="general sqr-medium .inline-right" type="button">Modificar</button>
+            </span>
+        </form>
+
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,170 @@
+@charset "UTF-8";
+
+.partners-container {
+    margin-top: 3em;
+    float: left;
+    height: auto;
+    background: var(--canatur-gris-claro);
+    width: 100%;
+    border-color: var(--canatur-gris-metal) !important;
+    border: solid 1px;
+}
+
+.rows-container {
+    height: auto;
+    width: 100%;
+}
+
+.same-height * {
+    height: 30px;
+}
+
+.batch-container{
+    float: left;
+    background: var(--canatur-gris-claro);
+    width: 100%;
+    border-color: var(--canatur-gris-metal) !important;
+    border: solid 1px;
+    height: auto;
+    padding: .1em;
+}
+
+.table-container{
+    float: left;
+    width: 100%;
+    border: solid 1px;
+    height: auto;
+    padding: .1em;
+}
+
+.table-container th, td, tr {
+    margin-left: 0px !important;
+}
+
+.table-container table{
+    margin-left: 0px !important;
+}
+
+.action-selector-big {
+    border: 1px solid #ccc;
+    width: 20%;
+    height: 30px;
+    font-size: .8em;
+    overflow: hidden;
+    background: #fafafa;
+    outline: none;
+    margin-top:.2em;
+    margin-bottom:.2em;
+}
+
+.action-selector {
+    border: 1px solid #ccc;
+    width: 20%;
+    height: 25px;
+    font-size: .8em;
+    overflow: hidden;
+    background: #fafafa;
+    outline: none;
+    margin-top:.2em;
+    margin-bottom:.2em;
+}
+
+.action-selector select {
+    padding: 5px 8px;
+    width: 130%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    outline: none;
+    padding: 1em;
+}
+
+.action-selector select:focus {
+    outline: none;
+}
+
+.selector-big-width {
+    width: 12em;
+}
+
+.small-text {
+    margin-top: .4em;
+    font-size: 0.8em;
+    letter-spacing: .1em;
+}
+
+.reservations-container label {
+    color: var(--canatur-gris-oscuro);
+    font-weight: bold;
+    font-size: 0.8em;
+    margin-left: .8em;
+    margin-right: .5em !important;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    border: none;
+}
+
+td {
+    text-align: center;
+    font-size: 0.8em;
+    cursor: pointer;
+}
+
+th, td {
+    width: 13%;
+    padding: 0.8em;
+}
+
+th {
+    text-align: center;
+    font-size: 1em;
+}
+
+tr:nth-child(even){
+    background-color: var(--canatur-gris-claro);
+}
+
+.small-column{
+    width: 6% !important;
+}
+
+.big-collumn{
+    width: 20% !important;
+}
+
+.table-header{
+    border: solid 1px;
+    border-color: var(--canatur-gris);
+    font-size: 0.8em;
+    font-weight: lighter;
+    height: 40px;
+}
+
+td .state-image{
+    width: 30px;
+    height: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    float: none !important;
+}
+
+input {
+    text-align: center;
+}
+
+.empty-table-text {
+    margin: 1em;
+}
+
+@media screen and (max-width: 650px) {
+    th, td {
+        padding: 0.7em;
+        font-size: 0.7em;
+    }
+}

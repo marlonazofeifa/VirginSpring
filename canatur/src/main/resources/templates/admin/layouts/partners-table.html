@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <th:block th:fragment="partner-header">
+        <link rel="stylesheet" th:href="@{../css/partners.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{../css/general.css}" type="text/css"/>
+        <script type="text/javascript" th:src="@{../js/jquery-3.2.1.min.js}"></script>
+        <script type="text/javascript" th:src="@{../js/cool-alerts.js}"></script>
+        <script type="text/javascript" th:src="@{../js/messages-alert.js}"></script>
+        <script type="text/javascript" th:src="@{../js/partners.js}"></script>
+
+    </th:block>
+</head>
+<body>
+<section layout:fragment="partner-table">
+    <div class="content-wrapper">
+        <!-- Here we add our page content. Everything else is meant to be the same for every page. -->
+        <div class="float-left">
+            <div class="float-left" style="margin-top: 20px; margin-bottom: 20px">
+                <h1 style=" align-content: center" th:text="Afiliados"></h1>
+                <form action="/admin/registrar-afiliado" sec:authorize="hasAuthority('BOSS')">
+                    <button type="submit" class="general">AGREGAR AFILIADO</button>
+                </form>
+            </div>
+        </div>
+
+        <p id="message-alert" class="not-visible" th:text="${postMessage}"></p>
+        <p id="message-alert-type" class="not-visible" th:text="${postMessageType}"></p>
+        <div class="partners-container clearfix">
+            <div class="rows-container">
+                <div class="float-left-no-margin">
+                    <form action="#" method="get" th:action="@{/admin/afiliados}">
+                        <div class="full-size default-border same-height">
+                            <select name="status" class="action-selector-big margin-right selector-big-width">
+                                <optgroup label="Estado">
+                                    <th:block th:if="${status != null}">
+                                        <option selected="selected" th:text="${status}"> Estado del afiliado</option>
+                                    </th:block>
+                                    <th:block th:if="${status == null}">
+                                        <option disabled="disabled" selected="selected"> Estado del afiliado</option>
+                                    </th:block>
+                                    <option>
+                                        Activos
+                                    </option>
+                                    <option>
+                                        Inactivos
+                                    </option>
+                                    <option>
+                                        Todos
+                                    </option>
+                                </optgroup>
+                            </select>
+                            <label class="margin-right data-label">Nombre de afiliado</label>
+                            <input class="default-datalist rounded-border margin-right selector-big-width"
+                                    name="id"
+                                    list="partners"
+                                    placeholder="Id de Afiliado"
+                                    th:value="${partnerSelected} ? ${partnerSelected} : ''"/>
+                            <datalist id="partners">
+                                <th:block th:each="iterator : ${partners}">
+                                    <option th:value="${iterator.numId+ ' - '+ iterator.name}"></option>
+                                </th:block>
+                            </datalist>
+                            <button id="filter-button-partners" class="general small" type="submit">Filtrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="batch-container">
+            <div class="float-right no-margin">
+                <div th:if="${partnerscount > 1 }">
+                    <p class="small-text" th:text="${partnerscount}+' afiliados encontrados.'"/>
+                </div>
+                <div th:if="${partnerscount == 1 }">
+                    <p class="small-text" th:text="${partnerscount}+' afiliado encontrado.'"/>
+                </div>
+                <div th:if="${partnerscount &lt; 1 }">
+                    <p class="small-text" th:text="'0 afiliados encontrados.'"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="full-size">
+            <tr class="table-header">
+                <th class="small-column">Número Id</th>
+                <th>Nombre</th>
+                <th>Teléfono Principal</th>
+                <th>Teléfono de Emergencias</th>
+                <th class="hide-mobile">Correo electrónico</th>
+                <th class="small-column">Activo</th>
+            </tr>
+            <div th:if="${partners != null }">
+                <th:block th:each="iterator : ${partners}">
+                    <tr class="partner-row">
+                        <td class="small-column partner-selector id" th:text="${iterator.numId}"/>
+                        <td class="partner-selector" th:text="${iterator.name}"/>
+                        <td class="partner-selector" th:text="${iterator.principalTelephone}"/>
+                        <td class="partner-selector" th:text="${iterator.emergencyTelephone}"/>
+                        <td class="hide-mobile partner-selector" th:text="${iterator.email}"/>
+                        <td class="small-column" align="center">
+                            <th:block th:with="role = ${#authentication.authorities[0]}">
+                                <th:block th:if="${#strings.equalsIgnoreCase(role,'BOSS')}">
+                                    <input type="checkbox"
+                                            class="partner-state"
+                                            th:checked="${iterator.state}"
+                                            th:value="${iterator.numId}"/>
+                                </th:block>
+                                <th:block th:unless="${#strings.equalsIgnoreCase(role,'BOSS')}">
+                                    <input type="checkbox"
+                                            class="partner-state"
+                                            disabled="disabled"
+                                            th:checked="${iterator.state}"
+                                            th:value="${iterator.numId}"/>
+                                </th:block>
+                            </th:block>
+                        </td>
+                    </tr>
+                </th:block>
+            </div>
+        </table>
+        <div class="empty-table-text" th:if="${partners == null or #lists.isEmpty(partners)}">
+            <span>No se encontraron afiliados con los criterios de búsqueda ingresados.</span>
+        </div>
+    </div>
+</section>
+</body>
+</html>

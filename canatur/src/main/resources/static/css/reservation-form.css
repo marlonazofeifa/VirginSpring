@@ -1,0 +1,281 @@
+.reservation-form-container {
+    width: 100%;
+    height: auto;
+    margin-top: 3em !important;
+    padding: 1em 2em 1em 2em;
+    background-color: #EEE;
+    border-radius: .4em;
+}
+
+.reservation-form-container span {
+    padding: 0% 1% 0% 1%;
+    margin-bottom: 1.5em;
+}
+
+.reservation-form-container .compound {
+    padding: 1em 3% 1em 3%;
+    background: rgba(191, 191, 191, 0.33)!important;
+    border-radius: .4em;
+}
+
+.form-container span button {
+    margin-top: .8em;
+}
+
+.form-container select {
+    margin-top: .3em !important;
+    background-color: white;
+    height: 35px;
+}
+
+span .full-size{
+    width: 100%;
+    height: auto;
+}
+
+input .full-size{
+    width: 100%;
+}
+
+.half {
+    width: 48% !important;
+}
+
+.fourth {
+    width: 22.3% !important;
+}
+
+.margin-left {
+    margin-left: 3% !important;
+}
+
+.input-container * {
+    width: 100%;
+}
+
+.input-container button {
+    width: auto !important;
+}
+
+.reservation-form-container label {
+    color: black;
+}
+
+.reservation-form-container h2 {
+    margin-left: .1em;
+    margin-bottom: .5em;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.loading {
+    color: var(--canatur-verde) !important;
+}
+
+.form-container input, textarea, select {
+    font-size: 0.8em;
+    height: 35px;
+    outline:none;
+    padding-left: .5em;
+    margin-top: .7em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.form-container textarea {
+    line-height: 35px;
+    display: inline-block;
+    vertical-align:middle;
+}
+
+.form-container input:focus, textarea:focus, select:focus {
+    border-color: #3EAB34;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+}
+
+.reservation-form-container p {
+    color: black;
+}
+
+.control-label * {
+    width: auto;
+}
+
+.tags-area * {
+    width: auto;
+}
+
+.tags-input * {
+    width: auto;
+}
+
+.control * {
+    width: auto;
+}
+
+.margin-top {
+    margin-top: .3em !important;
+}
+
+.passenger-row{
+    padding: .5em .5em .5em .5em !important;
+    margin-top: 0.5em;
+}
+
+.field-passenger-name {
+    width: 41% !important;
+    margin-left: 2%;
+    margin-right: 2%;
+    display: inline-block;
+    font-size: 0.7em;
+    height: fit-content;
+    vertical-align: middle;
+}
+
+.remove-passenger{
+    text-align: center;
+    align-items: center;
+}
+
+.passenger-index{
+    width: 3%;
+}
+
+.btn_add_passenger {
+    margin-left: 0.5em;
+    display: flex;
+    align-items: flex-end;
+    border: none !important;
+    background-color: transparent;
+    margin-top: 0em !important;
+}
+
+.btn-remove-passenger {
+    display: inline-block;
+    border: none;
+    vertical-align: middle;
+    margin: 0em !important;
+}
+
+.align-top{
+    vertical-align: top;
+}
+
+button{
+    border: none;
+    background: transparent;
+}
+
+#flight-arrival-time {
+    background-color: #eee;
+}
+
+.summer-schedule {
+    font-size: .6em;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin-bottom: .2em;
+    color: white !important;
+}
+
+.back {
+    margin-top: .3em;
+    background: hsla(34, 100%, 50%, 1);
+    border-radius: 0.25em;
+}
+
+.back-disabled {
+    margin-top: .3em;
+    background: grey;
+    border-radius: 0.25em;
+}
+
+.action-selector {
+    border: 1px solid #ccc;
+    height: 35px !important;
+    font-size: .8em;
+    overflow: hidden;
+    background: #fafafa;
+    outline: none;
+    margin-top:.2em;
+    margin-bottom:.2em;
+}
+
+.time-selectors{
+    border: 1px solid #ccc;
+    height: 35px !important;
+    font-size: 1.1em !important;
+    overflow: hidden;
+    background: #fafafa;
+    outline: none;
+    margin-top:.2em;
+    margin-bottom:.2em;
+}
+
+.red-outline {
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    box-shadow: 0 0 0 1pt red;
+}
+
+.red {
+    color: red;
+}
+
+#workers {
+    display: inline;
+}
+
+#workers * {
+    display: none;
+}
+
+.action-selector * {
+    display: inline !important;
+}
+
+@media screen and (max-width: 650px) {
+
+    .form-container .input-container {
+        width: 100% !important;
+    }
+
+    .form-container .input-container * {
+        width: 100% !important;
+    }
+
+    .margin-left {
+        margin-left: 0% !important;
+    }
+
+    .input-container {
+        margin-top: 1em;
+    }
+
+    .field-passenger-name {
+        margin-right: 0% !important;
+        margin-left: 0% !important;
+    }
+
+    .passenger-index{
+        text-align: center;
+        margin-bottom: .5em;
+    }
+
+    .remove-passenger {
+        margin-top: .5em;
+    }
+}

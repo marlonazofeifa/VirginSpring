@@ -1,0 +1,44 @@
+.content-wrapper-add {
+    margin: auto;
+    padding: 10px;
+    position: absolute;
+    width: 60%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    min-width: 500px;
+}
+
+.form-control-wide {
+    width:100%!important;
+}
+
+.container-flight-fields{
+    background: rgba(191, 191, 191, 0.33)!important;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 1.5em;
+    display: flex;
+    flex-direction: column;
+    border: 0 !important;
+}
+
+.form-row{
+    margin-top:2em;
+    margin-bottom:1em;
+}
+
+.field{
+    float:left;
+    padding-left:15px;
+    padding-right:15px;
+    margin-top: 1em;
+}
+
+.textbox-fields{
+    align-items: center;
+    padding-left:5px!important;
+    padding-right:5px!important;
+    display: flex;
+    flex-direction: column;
+}
