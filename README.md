@@ -1,3 +1,3 @@
-# DAMBO-CANATUR
+# VirginSpring working Template
 
-Web application to allow reserve VIP treatment to CANATUR's costumers.
+A working starting template to Spring
