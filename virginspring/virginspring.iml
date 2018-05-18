@@ -14,10 +14,7 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../canatur/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/../canatur/src/main/java" />
-          <root url="file://$MODULE_DIR$/../canatur/src/main/resources" />
-        </sourceRoots>
+        <sourceRoots />
       </configuration>
     </facet>
     <facet type="hibernate" name="Hibernate">
