@@ -1,7 +1,7 @@
 package application.ProblemsResolver;
 
 
-import android.util.Pair;
+import javafx.util.Pair;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
@@ -137,8 +137,8 @@ public class TreeController implements Serializable {
                     //Revisa en la lista de preguntas realizadas hay alguna NA para esclarecer y formar un feedback consistente.
                     int i = 0;
                     for (Pair<Node, String> pair : _realizedQuestions) {
-                        if (pair.second.equals("NA")) {
-                            _actualNode = pair.first;
+                        if (pair.getValue().equals("NA")) {
+                            _actualNode = pair.getKey();
                             _realizedQuestions.remove(i);
                             break;
 
@@ -156,7 +156,7 @@ public class TreeController implements Serializable {
                             randomQuestion = this.getNode(num);
                             int j = 0;
                             for (Pair<Node, String> questionAndAnswer : _realizedQuestions) {
-                                if (questionAndAnswer.first.getNodeID() == randomQuestion.getNodeID()) {
+                                if (questionAndAnswer.getKey().getNodeID() == randomQuestion.getNodeID()) {
                                     break;
                                 }
                                 j++;
@@ -191,8 +191,8 @@ public class TreeController implements Serializable {
                         //Busca una pregunta con respuesta NA dentro de la lista de preguntas realizadas.
                         int i = 0;
                         for (Pair<Node, String> questionAndAnswer : _realizedQuestions) {
-                            if (questionAndAnswer.second.equals("NA")) {
-                                _actualNode = questionAndAnswer.first;
+                            if (questionAndAnswer.getValue().equals("NA")) {
+                                _actualNode = questionAndAnswer.getKey();
                                 _realizedQuestions.remove(i);
                                 break;
                             }
@@ -211,7 +211,7 @@ public class TreeController implements Serializable {
                                 randomQuestion = this.getNode(num);                        // Sacamos un nodo aleatorio
                                 int j = 0;                                                    // Verificamos si el nodo ya se preguntó
                                 for (Pair<Node, String> questionAndAnswer : _realizedQuestions) {
-                                    if (questionAndAnswer.first.getNodeID() == randomQuestion.getNodeID()) {
+                                    if (questionAndAnswer.getKey().getNodeID() == randomQuestion.getNodeID()) {
                                         break;
                                     }
                                     j++;
@@ -281,8 +281,8 @@ public class TreeController implements Serializable {
                             //Busca una pregunta con respuesta NA dentro de la lista de preguntas realizadas.
                             int i = 0;
                             for (Pair<Node, String> questionAndAnswer : _realizedQuestions) {
-                                if (questionAndAnswer.second.equals("NA")) {
-                                    _actualNode = questionAndAnswer.first;
+                                if (questionAndAnswer.getValue().equals("NA")) {
+                                    _actualNode = questionAndAnswer.getKey();
                                     _realizedQuestions.remove(i);
                                     break;
                                 }
@@ -301,7 +301,7 @@ public class TreeController implements Serializable {
                                     randomQuestion = this.getNode(num);                        // Sacamos un nodo aleatorio
                                     int j = 0;                                                    // Verificamos si el nodo ya se preguntó
                                     for (Pair<Node, String> questionAndAnswer : _realizedQuestions) {
-                                        if (questionAndAnswer.first.getNodeID() == randomQuestion.getNodeID()) {
+                                        if (questionAndAnswer.getKey().getNodeID() == randomQuestion.getNodeID()) {
                                             break;
                                         }
                                         j++;
@@ -339,7 +339,7 @@ public class TreeController implements Serializable {
         if (isLeaf()){
             result.add(_actualNode.getLabel().getStrValue());
         } else {
-            result = getPossibleFamiliesAux(_actualNode,result).second;
+            result = getPossibleFamiliesAux(_actualNode,result).getValue();
         }
         return result;
     }
@@ -364,7 +364,7 @@ public class TreeController implements Serializable {
             Pair<Node, Integer> pair;
             for (Double value : currentNode.getAttribute().getValues()) {
                 pair = getNodeAux(currentNode.getBranches().get(value), i + 1, n);
-                i = pair.second;
+                i = pair.getValue();
                 if (i == n) {
                     return pair;
                 }
@@ -423,7 +423,7 @@ public class TreeController implements Serializable {
     * */
     public void reset() {
         if (_questionsCounter > 0) {
-            _actualNode = _realizedQuestions.getFirst().first;
+            _actualNode = _realizedQuestions.getFirst().getKey();
             _realizedQuestions.clear();
             _questionsCounter = 0;
         }
@@ -435,7 +435,7 @@ public class TreeController implements Serializable {
     * */
     public void goBack() {
         if (_questionsCounter > 0) {
-            _actualNode = _realizedQuestions.getLast().first;
+            _actualNode = _realizedQuestions.getLast().getKey();
             _realizedQuestions.removeLast();
             _questionsCounter--;
         }
@@ -451,14 +451,14 @@ public class TreeController implements Serializable {
         matrix.setSize(1, _realizedQuestions.size());
         int i = 0;
         for (Pair<Node, String> question : _realizedQuestions) {
-            if (question.first.getLabel().getValue() != -1) {
+            if (question.getKey().getLabel().getValue() != -1) {
                 matrix.setAttrName(i, "familia");
 
                 TreeMap<Integer, String> its = new TreeMap<Integer, String>();
                 TreeMap<String, Integer> sti = new TreeMap<String, Integer>();
 
-                its.put(0, question.first.getLabel().getStrValue());
-                sti.put(question.first.getLabel().getStrValue(), 0);
+                its.put(0, question.getKey().getLabel().getStrValue());
+                sti.put(question.getKey().getLabel().getStrValue(), 0);
 
                 matrix.addStringToValue(i, sti);
                 matrix.addValueToString(i, its);
@@ -466,20 +466,20 @@ public class TreeController implements Serializable {
                 matrix.set(0, i, 0);
             } else {
                 boolean thereIsntTheAnswer = true;
-                for (Double value : question.first.getAttribute().getValues()) {//Mejorable
-                    if (_features.attrValue(question.first.getAttribute().getColumnPositionID(), value.intValue()) == question.second) {
+                for (Double value : question.getKey().getAttribute().getValues()) {//Mejorable
+                    if (_features.attrValue(question.getKey().getAttribute().getColumnPositionID(), value.intValue()) == question.getValue()) {
                         thereIsntTheAnswer = false;
                     }
                 }
                 if (thereIsntTheAnswer) {
                     //Agrega el valor al atributo
-                    matrix.setAttrName(i, question.first.getAttribute().getName());
+                    matrix.setAttrName(i, question.getKey().getAttribute().getName());
 
                     TreeMap<Integer, String> its = new TreeMap<Integer, String>();
                     TreeMap<String, Integer> sti = new TreeMap<String, Integer>();
 
-                    its.put(0, question.second);
-                    sti.put(question.second, 0);
+                    its.put(0, question.getValue());
+                    sti.put(question.getValue(), 0);
 
                     matrix.addStringToValue(i, sti);
                     matrix.addValueToString(i, its);
@@ -513,10 +513,10 @@ public class TreeController implements Serializable {
     private String monitorQuestionsRealized(boolean print){
         String result = "ROOT";
         for (Pair<Node, String> pair: _realizedQuestions){
-            if (pair.first.getLabel().getValue() != -1){
-                result += "LEAFNODE:  " + pair.first.getLabel().getStrValue()+ " : "+ pair.second + "\n";
+            if (pair.getKey().getLabel().getValue() != -1){
+                result += "LEAFNODE:  " + pair.getKey().getLabel().getStrValue()+ " : "+ pair.getValue() + "\n";
             }else {
-                result += "NODE: " + pair.first.getAttribute().getName() + " : " + pair.second + "\n";
+                result += "NODE: " + pair.getKey().getAttribute().getName() + " : " + pair.getValue() + "\n";
             }
         }
         if (print)
@@ -550,9 +550,9 @@ public class TreeController implements Serializable {
         LinkedList<Pair<String, String>> result = new LinkedList<Pair<String, String>>();
 
         for (Pair<Node, String> pair : _realizedQuestions) {
-            if (pair.first.getLabel().getValue() == -1)
-                result.add(new Pair(pair.first.getAttribute().getName(), pair.second));
-            else result.add(new Pair(pair.first.getLabel().getStrValue(), pair.second));
+            if (pair.getKey().getLabel().getValue() == -1)
+                result.add(new Pair(pair.getKey().getAttribute().getName(), pair.getValue()));
+            else result.add(new Pair(pair.getKey().getLabel().getStrValue(), pair.getValue()));
         }
         return result;
     }
